@@ -1,6 +1,7 @@
 extends layout
 
 // ce fichier servira à la fois pour test rapide et exam
+// tester mixins pour le test et stockage donnée
 
 block deco
 	link(rel='stylesheet', href='/stylesheets/question.css')
@@ -8,7 +9,7 @@ block deco
 block content
 	section#principale
 	h1#title
-		if (url = '/question')
+		if (url == '/question')
 			| Test rapide
 		else
 			| Examen officiel
