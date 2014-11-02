@@ -1,18 +1,18 @@
 extends layout
 
 // ce fichier servira à la fois pour test rapide et exam
-// tester mixins pour le test et stockage donnée
 
 block deco
 	link(rel='stylesheet', href='/stylesheets/question.css')
 	
 block content
 	section#principale
+	if (url == '/question')
+		- var changement = {title:"Test rapide", retour:"Retour menu"}
+	else
+		- var changement = {title:"Examen officiel", retour:"Abandon examen"}
 	h1#title
-		if (url == '/question')
-			| Test rapide
-		else
-			| Examen officiel
+		= changement.title
 	section#question
 		fieldset
 			h2 
@@ -34,10 +34,7 @@ block content
 			label(for='4')
 			br
 		a#retour.button(href='/tableauBord')
-			if (url == '/question')
-				| Retour menu
-			else 
-				| Abandon examen
+			= changement.retour
 		a#next.button Corriger
 	aside
 		h2 Statistiques
