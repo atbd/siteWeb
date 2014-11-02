@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title= Questionneur
+    meta(charset = 'utf-8')
+    link(rel='stylesheet', href='/stylesheets/globale.css')
+    block deco
+  body
+    #container
+        header 
+            h1#titre Questionneur
+            nav
+                ul
+                    li
+                        a#accueil(href='/accueil') Accueil
+                    li
+                        a#tableauBord(href='/tableauBord') Tableau de bord
+                    li
+                        a#instruction(href='/instructions') Instructions 
+        hr
+        block content
+        hr
+        footer
+            p TP2 LOG4420 par Anthony Delannoy 1761388 & Antoine Belvire 1757171
+            p © 2014 Questionneur sur les notions de Web

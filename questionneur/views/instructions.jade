@@ -1,0 +1,16 @@
+extends layout.jade
+
+block deco
+  link(rel='stylesheet', href='/stylesheets/instruction.css')
+
+block content
+  section
+    article
+      h1 Instructions
+      img(src="/images/instructions_for_dummies.png")
+      p Nous présentons dans cette section les différentes contraintes du site web.
+      p Nous présentons dans cette section les principes de fonctionnement du questionnaire, afin de vous fournir une vision globale de ce que vous devrez implémenter tout au long du trimestre. 
+      p La page centrale du site correspond au tableau de bord de l’utilisateur. Le tableau de bord donne la possibilité à l’utilisateur d’effectuer des tests rapides ou un examen officiel. Il contient également diverses informations sur les résultats des tests de l’utilisateur tels que le nombre de tests rapides réussis sur le nombre de tests rapides effectués, et la moyenne des examens.
+      p Les examens officiels permettent de tester officiellement les connaissances de l’utilisateur. À côté du bouton qui débute l’examen, l’utilisateur devra rentrer les paramètres de l’examen. Ces paramètres peuvent correspondre au domaine dans lequel il désire se faire évaluer (HTML, CSS ou Javascript) et le nombre de questions que devra contenir l’examen. Les pages de tests rapides et d’examens sont très similaires.
+      p La page de test rapide contient la question, ainsi qu’un choix multiple de réponses à la question (des boutons radio ou des cases à cocher). L’utilisateur a le choix de retourner au menu (sans avoir besoin de répondre à la question), ou de répondre à la question et de cliquer sur le bouton suivant. S’il clique sur le bouton suivant, une nouvelle question à laquelle l’utilisateur doit répondre s’affiche, et ainsi de suite.
+

@@ -1,0 +1,12 @@
+extends layout
+
+block deco
+	link(rel='stylesheet', href='/stylesheets/examenTermine.css')
+
+block content
+	section
+	h1 Examen Terminé!
+	p#msg_results Vous avez terminé l'examen avec une note de
+		i#noteExam .
+	p Si vous n'êtes pas satisfait de vos connaissances, n'oubliez pas de vous pratiquer à l'aide des tests rapides.
+	a.button(href='/tableauBord') Retour au menu

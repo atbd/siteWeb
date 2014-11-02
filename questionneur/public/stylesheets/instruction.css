@@ -1,0 +1,26 @@
+article
+{
+	margin:auto;
+	text-align:justify;
+}
+
+article h1
+{
+	text-align: center;
+}
+
+article img
+{
+	float:left;
+	margin-right: 10px;
+	margin-bottom: 2px;
+	margin-left: 0px;
+	margin-top: 0px;
+	width: 150px;
+	height: 200px;
+}
+
+@media screen and (max-width: 1024px)
+{
+
+}

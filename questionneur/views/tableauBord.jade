@@ -1,0 +1,43 @@
+extends layout
+
+block deco
+	link(rel='stylesheet', href='/stylesheets/tableauBord.css')
+
+block content
+	section#principale
+		h1 Menu Personnel
+		section#blabla
+			div
+				h2 Début d'un test rapide.
+				a.button(href='/question') Test rapide
+			div
+				h2 Début d'un examen officiel.
+				form(method='POST', action='/questionExamen')
+					p Choisissez le domaine des questions.
+					label(for='html')
+						input(type='checkbox', name='HTML') 
+						| HTML5
+					label(for='css')
+						input(type='checkbox', name='CSS') 
+						| CSS3
+					label(for='js')
+						input(type='checkbox', name='JS') 
+						| Javascript
+				p Choisissez le nombre de questions.
+				input(type='number', min='1', max='999', value='1')
+				input.button(type='submit', value='Examen officiel')
+		aside
+			h2 Statistiques
+			section
+				p Note cumulative test rapide :
+				p#cumulRapide
+			section
+				p Pourcentage de bonnes réponses aux examens :
+				p#cumulExam
+			button#RAZ(onclick='raz();') Remise à zero
+			button.details Voir les détails
+			.popup
+				#details.popup_content
+					ul#listeDetails
+				.popup_shadow
+				div

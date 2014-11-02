@@ -1,0 +1,185 @@
+/*------------------------*/
+/*---------Total----------*/
+/*------------------------*/
+* 
+{
+  font-family: bonvenocf;
+}
+
+h1, h2, nav a
+{
+  font-family: caviardreams;
+}
+
+h1
+{
+  font-size: 20pt;
+}
+
+#container
+{
+  width: 900px;
+  margin:auto;
+  font-size: 10pt;
+}
+
+/*------------------------*/
+/*---------Footer---------*/
+/*------------------------*/
+footer
+{
+  text-align: center;
+  font-size: 8pt;
+}
+
+/*------------------------*/
+/*---------Header---------*/
+/*------------------------*/
+/*
+header
+{
+  background-image: url('../image/pointInt.png');
+  background-repeat: no-repeat;
+  background-size: 50px;
+  background-position:  bottom left;
+} */
+
+#titre:first-letter
+{
+  font-size: 35pt;
+}
+
+#titre
+{
+  font-size: 25pt;
+}
+
+nav
+{
+  width: 50%;
+  @media screen and (min-width: 1024px)
+  {
+    min-width: 700px;
+  }
+  margin:auto;
+  padding-left: 400px;
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+}
+
+nav li
+{
+  list-style: none;
+  display: inline-block;
+  margin-right: 35px;
+}
+
+a
+{
+  text-decoration: none;
+}
+
+nav a
+{
+  text-transform:uppercase;
+}
+
+li a.current
+{
+  background: aquamarine;
+  border-color: aquamarine;
+  border-radius: 10px;
+  border-width: 10px;
+  border-style: solid;
+  color: white;
+}
+
+/*------------------------*/
+/*---------Section--------*/
+/*------------------------*/
+/*
+section
+{
+  width: 70%;
+  margin:auto;
+  text-align: justify;
+}
+*/
+
+/*------------------------*/
+/*--------Polices---------*/
+/*------------------------*/
+
+@font-face {
+    font-family: 'caviardreams';
+    src: url('/polices/caviardreams/CaviarDreams-webfont.eot');
+    src: url('/polices/caviardreams/CaviarDreams-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/polices/caviardreams/CaviarDreams-webfont.woff') format('woff'),
+         url('/polices/caviardreams/CaviarDreams-webfont.ttf') format('truetype'),
+         url('/polices/caviardreams/CaviarDreams-webfont.svg#caviar_dreamsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'bonvenocf';
+    src: url('/polices/bonvenocf/BonvenoCF-Light-webfont.eot');
+    src: url('/polices/bonvenocf/BonvenoCF-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/polices/bonvenocf/BonvenoCF-Light-webfont.woff') format('woff'),
+         url('/polices/bonvenocf/BonvenoCF-Light-webfont.ttf') format('truetype'),
+         url('/polices/bonvenocf/BonvenoCF-Light-webfont.svg#bonvenocflight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@media screen and (max-width: 1024px)
+{
+  #container
+  {
+    width: auto;
+    margin: auto;
+  }
+
+  #titre
+  {
+    text-align: left;
+    display: inline-block;
+  }
+
+  nav
+  {
+    padding-left: 0px;
+    text-align: right;
+    vertical-align: top;
+    display: inline-block;
+    padding-top: 10px;
+  }
+
+  nav li
+{
+  display: block;
+  margin-right: 0px;
+  text-align: right;
+  padding-top: 15px;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

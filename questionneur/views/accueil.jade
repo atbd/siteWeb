@@ -1,0 +1,14 @@
+extends layout
+
+block deco
+	link(rel='stylesheet', href='/stylesheets/accueil.css')
+	
+block content
+	#logo
+		img(src='/images/html-css-js.png')
+	article
+		h1 Questionnaire sur le web
+		p Ce site web permet au gens de tester leurs connaissances théoriques sur les technologies du Web 2.0.
+		h2 Détails ... 
+		p L'ensemble des questions qui seront posées porteront sur HTML5, CSS3 et Javascript.
+		a.button(href='/tableauBord') Commencer l'aventure
