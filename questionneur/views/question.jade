@@ -1,8 +1,6 @@
 extends layout
 
 // ce fichier servira à la fois pour test rapide et exam
-// mettre Test rapide ou examen en javascript
-// mettre retour menu en javascript ou abandon exam
 
 block deco
 	link(rel='stylesheet', href='/stylesheets/question.css')
@@ -10,6 +8,10 @@ block deco
 block content
 	section#principale
 	h1#title
+		if (url = '/question')
+			| Test rapide
+		else
+			| Examen officiel
 	section#question
 		fieldset
 			h2 
@@ -30,7 +32,11 @@ block content
 			input(type='radio', name='reponse', value='4')
 			label(for='4')
 			br
-		a#retour.button(href='/tableauBord') 
+		a#retour.button(href='/tableauBord')
+			if (url == '/question')
+				| Retour menu
+			else 
+				| Abandon examen
 		a#next.button Corriger
 	aside
 		h2 Statistiques

@@ -11,7 +11,15 @@ router.get('/accueil', function(req, res) {
 });
 
 router.get('/question', function(req, res) {
-  res.render('question');
+  res.render('question', { 
+  url: req.originalUrl
+ });
+});
+
+router.get('/questionExamen', function(req, res) {
+  res.render('question', { 
+  url: req.originalUrl
+ });
 });
 
 router.get('/examenTermine', function(req, res) {
