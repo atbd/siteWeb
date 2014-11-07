@@ -91,4 +91,9 @@ $(document).ready(function () {
 	tableauQuestions.prototype.obtenirQuestionParId = function(id) {
 		return this._tableau[id];
 	};
+	
+	tableauQuestions.prototype.questionAleatoireRapide = function() {
+		var myId = Math.floor(Math.random()*this._tableau.length);
+		return tableauQuestions.prototype.obtenirQuestionParId(myId)
+	};
 });
