@@ -1,4 +1,5 @@
 // Ce script récupère les catégories et nombre de questions voulue par l'utilisateur
+// dans le tableau de bord
 
 $(document).ready(function () {
 	var nbrQ; 
@@ -25,4 +26,16 @@ $(document).ready(function () {
 		localStorage.setItem('categorie', categorie);
 		localStorage.setItem('nbrQuestions', nbrQ);
 	}));
+});
+
+/*
+ * Vérifie qu'une catégorie est bien choisie
+ */
+$(document).ready(function() {
+	$('form').submit( function (e) {
+		if ($("input[type='checkbox']:checked").length == 0) {
+			alert("Veuillez choisir au moins un domaine");
+			e.preventDefault();
+		}
+	});
 });

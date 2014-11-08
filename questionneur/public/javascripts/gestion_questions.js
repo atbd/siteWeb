@@ -1,109 +1,150 @@
 /*
  * gestion_questions.js
  *
- * Fonctions pour les tests rapides et l'examen
+ * Fonctions côté client
  */
+
+/*
+ * Correction côté client (TP4)
+ */
+ 
+//TODO
+
+/*
+ * Vérifie qu'une réponse est bien choisie
+ */
+$(document).ready(function() {
+	$('form').submit( function (e) {
+		if ($("input[type='radio']:checked").length == 0) {
+			alert("Veuillez choisir une réponse");
+			e.preventDefault();
+		}
+	});
+});
+
+
+
+
+// EN DESSOUS ANCIEN CODE
 
 /*
  * Demarre test rapide
  */
-function startTest() {
-    replaceQuestion(getRandomQuestion());
-    $('#next').click(correctAnswer);
-}
-
-/*
- * Renvoit une question aléatoire
- */
-function getRandomQuestion() {
-    if (questions.length < 1) {
-        alert("getRandomQuestion: Pas assez de questions dispos !");
-        return;
-    }
-    var numero = Math.floor(Math.random()*questions.length);
-    localStorage.setItem('numeroQuestion', numero);
-    return questions[numero];
-}
-
-/* 
- * Affiche une nouvelle question
- */
-function replaceQuestion(newQuestion) {
-	$('#domain').text(newQuestion.domain);
-	$('#question_text').text(newQuestion.text);
-	$('#question label:nth-of-type(1)').text(newQuestion.answer1);
-	$('#question label:nth-of-type(2)').text(newQuestion.answer2);
-	$('#question label:nth-of-type(3)').text(newQuestion.answer3);
-	$('#question label:nth-of-type(4)').text(newQuestion.answer4);
-}
+//function startTest() {
+//    replaceQuestion(getRandomQuestion());
+//    $('#next').click(correctAnswer);
+//}
 
 /* 
  * Passe à la question suivante en sauvegardant les réponses
  */
-function gotoNextQuestion() {
-    //alert("goto");
-    $("input[type='radio']:checked").prop('checked',false);
-    $('label').css('background-color','white');
-    replaceQuestion(getRandomQuestion());
-    $('#next').text("Corriger");
-    $("#next").off('click');
-    $('#next').click(correctAnswer);
-    majNote();
-} 
+//function gotoNextQuestion() {
+//    //alert("goto");
+//    $("input[type='radio']:checked").prop('checked',false);
+//    $('label').css('background-color','white');
+//    replaceQuestion(getRandomQuestion());
+//    $('#next').text("Corriger");
+//    $("#next").off('click');
+//    $('#next').click(correctAnswer);
+//    majNote();
+//} 
 
 /*
  * Correction des réponses et changement bouton corriger en question suivante
  */
-function correctAnswer() { 
-    
-    if (localStorage.getItem("repJuste")==null) {
-        localStorage.setItem("repJuste", 0);
-    }
+//$.ajax({
+//    url: "/question",
+//    type: "POST",
+//    dataType: "json",
+//    data: {objectData: someObject},
+//    contentType: "application/json",
+//    cache: false,
+//    timeout: 5000,
+//    complete: function() {
+//      //called when complete
+//      console.log('process complete');
+//    },
 
-    if (localStorage.getItem("repTotal")==null) {
-        localStorage.setItem("repTotal", 0);
-    }
-    
-    var repJuste = parseInt(localStorage.getItem("repJuste"));
-    var repTotal = parseInt(localStorage.getItem("repTotal"));
+//    success: function(data) {
+//      console.log(data);
+//      console.log('process sucess');
+//   },
 
-    if ($("input[type='radio']:checked").length==0) {
-        alert("Choississez une réponse");
-        repTotal -=1;
-        //window.location.reload();
-        return;
-    }
+//    error: function() {
+//      console.log('process error');
+//    },
+//});
 
-    var numero = localStorage.getItem('numeroQuestion');
-    var vraiReponse = questions[numero].answerIs;
-    var repCoche = $("input[type='radio']:checked").val();
 
-        if ( repCoche== vraiReponse) {
-            $("label[for=" + repCoche + "]").css('background-color', 'green');
-            repJuste+=1;
+//$(document).ready(function() {
+//	
+//	$('.button#next').click(function corriger(){
+//		var repCoche = $("input[type='radio']:checked").val();
+//		var vraiReponse = sessionStorage.getItem.current.answerIs;
 
-        } else {
-            $("label[for=" + repCoche + "]").css('background-color', 'red');
-            $("label[for=" + vraiReponse + "]").css('background-color', 'green');
-        }
-    repTotal+=1;
-    
-    localStorage.setItem("repJuste", repJuste.toString());
-    localStorage.setItem("repTotal", repTotal.toString());
+//        if ( repCoche == vraiReponse) {
+//            $("label[for=" + repCoche + "]").css('background-color', 'green');
+//            repJuste+=1;
 
-    /* On utilise le même bouton pour la correction et le passage à la question
-     * suivante, on doit donc adapter les évènements click */
-    $('#next').text("Question suivante");
-    $('#next').off("click");
-    $('#next').click(gotoNextQuestion);
-}
+//        } else {
+//            $("label[for=" + repCoche + "]").css('background-color', 'red');
+//            $("label[for=" + vraiReponse + "]").css('background-color', 'green');
+//        }
+//    });
+//});
+	
+	
+//function correctAnswer() { 
+//    
+//    if (localStorage.getItem("repJuste")==null) {
+//        localStorage.setItem("repJuste", 0);
+//    }
 
-function majNote() {
-    repJuste = localStorage.getItem("repJuste");
-    repTotal = localStorage.getItem("repTotal");
+//    if (localStorage.getItem("repTotal")==null) {
+//        localStorage.setItem("repTotal", 0);
+//    }
+//    
+//    var repJuste = parseInt(sessionStorage.getItem("repJuste"));
+//    var repTotal = parseInt(sessionStorage.getItem("repTotal"));
 
-    repJuste = (parseInt(repJuste)).toString();
-    repTotal = (parseInt(repTotal)).toString();
+//    if ($("input[type='radio']:checked").length==0) {
+//        alert("Choississez une réponse");
+//        repTotal -=1;
+//        //window.location.reload();
+//        return;
+//    }
 
-    $('#noteCourante').text(repJuste + "/" + repTotal);
-}
+//    var numero = localStorage.getItem('numeroQuestion');
+//    var vraiReponse = questions[numero].answerIs;
+//    var repCoche = $("input[type='radio']:checked").val();
+
+//        if ( repCoche== vraiReponse) {
+//            $("label[for=" + repCoche + "]").css('background-color', 'green');
+//            repJuste+=1;
+
+//        } else {
+//            $("label[for=" + repCoche + "]").css('background-color', 'red');
+//            $("label[for=" + vraiReponse + "]").css('background-color', 'green');
+//        }
+//    repTotal+=1;
+//    
+//    localStorage.setItem("repJuste", repJuste.toString());
+//    localStorage.setItem("repTotal", repTotal.toString());
+
+//    /* On utilise le même bouton pour la correction et le passage à la question
+//     * suivante, on doit donc adapter les évènements click */
+//    $('#next').text("Question suivante");
+//    $('#next').off("click");
+//    $('#next').click(gotoNextQuestion);
+//}
+
+//function majNote() {
+//    repJuste = localStorage.getItem("repJuste");
+//    repTotal = localStorage.getItem("repTotal");
+
+//    repJuste = (parseInt(repJuste)).toString();
+//    repTotal = (parseInt(repTotal)).toString();
+
+//    $('#noteCourante').text(repJuste + "/" + repTotal);
+//}
+//});
