@@ -22,18 +22,10 @@ block content
 				| Domaine #{question.domain}
 			p
 				i Question : #{question.text}
-			input(type='radio', name='reponse', value='1')
-			label(for='1') #{question.answer1}
-			br
-			input(type='radio', name='reponse', value='2')
-			label(for='2') #{question.answer2}
-			br
-			input(type='radio', name='reponse', value='3')
-			label(for='3') #{question.answer3}
-			br
-			input(type='radio', name='reponse', value='4')
-			label(for='4') #{question.answer4}
-			br
+			each answer, index in question.answers
+				input(type='radio', name='reponse', value="#{index}")
+				label(for="#{index}") #{answer}
+				br
 		a#retour.button(href='/tableauBord')
 			= changement.retour
 		a#next.button Corriger
