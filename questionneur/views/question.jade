@@ -19,22 +19,20 @@ block content
 	section#question
 		fieldset
 			h2 
-				| Domaine :
-				span#domain
+				| Domaine #{question.domain}
 			p
-				i Question : 
-				span#question_text
+				i Question : #{question.text}
 			input(type='radio', name='reponse', value='1')
-			label(for='1')
+			label(for='1') #{question.answer1}
 			br
 			input(type='radio', name='reponse', value='2')
-			label(for='2')
+			label(for='2') #{question.answer2}
 			br
 			input(type='radio', name='reponse', value='3')
-			label(for='3')
+			label(for='3') #{question.answer3}
 			br
 			input(type='radio', name='reponse', value='4')
-			label(for='4')
+			label(for='4') #{question.answer4}
 			br
 		a#retour.button(href='/tableauBord')
 			= changement.retour

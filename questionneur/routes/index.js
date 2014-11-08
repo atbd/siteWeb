@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../lib/db');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -11,8 +12,10 @@ router.get('/accueil', function(req, res) {
 });
 
 router.get('/question', function(req, res) {
+  q = db.questionAleatoireRapide();
   res.render('question', { 
-  url: req.originalUrl
+    url: req.originalUrl,
+	question: q
  });
 });
 
