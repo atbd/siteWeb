@@ -8,6 +8,9 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+// Notre base de donnees
+var db = require('./lib/db');
+
 var app = express();
 
 // view engine setup
@@ -56,5 +59,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
+console.log("hello");
+console.log(db.questionAleatoireRapide().text);
 
 module.exports = app;
