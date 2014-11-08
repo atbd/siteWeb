@@ -12,7 +12,7 @@ questions.push({id: 0,
 					  "Home Tool Markup Language",
 			          "Hyper Text Markup Language",
 			          "Hotel Tango Mike Lima"],
-			answerIs: "3"});
+			answerIs: "2"});
 questions.push({id: 1,
 			domain: "HTML",
 			text: "Qui « fait » les standards du web ?",
@@ -20,7 +20,7 @@ questions.push({id: 1,
 					  "The World Wide Web Consortium",
 			          "Google",
 			          "Mozilla"],
-			answerIs: "2"});
+			answerIs: "1"});
 questions.push({id: 2,
 			domain: "HTML",
 			text: "Choisissez le tag HTML correspondant au plus gros titre :",
@@ -28,7 +28,7 @@ questions.push({id: 2,
 					  "<h6>",
 			          "<heading>",
 			          "<h1>"],
-			answerIs: "4"});
+			answerIs: "3"});
 questions.push({id: 3,
 			domain: "CSS",
 			text: "Que signifie CSS ?",
@@ -36,7 +36,7 @@ questions.push({id: 3,
 			         "Cascading Square Sheets",
 			         "Collection of Style Sheets",
 			         "Cascading Style Sheets"],
-			answerIs: "4"});
+			answerIs: "3"});
 questions.push({id: 4,
 			domain: "CSS",
 			text: "Quel sélecteur correspond aux liens qui sont enfants directs de paragraphes ?",
@@ -44,7 +44,7 @@ questions.push({id: 4,
 			         "p a",
 			         "p > a",
 			         "p ~ a"],
-			answerIs: "3"});
+			answerIs: "2"});
 questions.push({id: 5,
 			domain: "CSS",
 			text: "Quel attribut permet de changer la couleur d'arrière plan d'un bloc ?",
@@ -52,7 +52,7 @@ questions.push({id: 5,
 			         "background-color",
 			         "display",
 			         "background"],
-			answerIs: "2"});
+			answerIs: "1"});
 questions.push({id: 6,
 			domain: "CSS",
 			text: ":hover est…",
@@ -60,7 +60,7 @@ questions.push({id: 6,
 			         "une classe ?",
 			         "une pseudo-classe ?",
 			         "un attribut ?"],
-			answerIs: "3"});
+			answerIs: "2"});
 questions.push({id: 7,
 			domain: "JS",
 			text: "Dans quel élément HTML place-t-on le JavaScript ?",
@@ -68,7 +68,7 @@ questions.push({id: 7,
 			         "<scripting>",
 			         "<javascript>",
 			         "<js>"],
-			answerIs: "1"});
+			answerIs: "0"});
 questions.push({id: 8,
 			domain: "JS",
 			text: "Qu'est-ce que jQuery ?",
@@ -76,7 +76,7 @@ questions.push({id: 8,
 			         "Une fonction intégrée à JavaScript",
 			         "Un élément HTML",
 			         "Un sélecteur CSS"],
-			answerIs: "1"});
+			answerIs: "0"});
 questions.push({id: 9,
 			domain: "JS",
 			text: "Qu'est-ce qui est interprété en premier dans un code JavaScript ?",
@@ -84,7 +84,7 @@ questions.push({id: 9,
 			         "La déclaration des variables",
 			         "La déclaration des fonctions",
 			         "La déclaration des variables et des fonctions"],
-			answerIs: "4"});
+			answerIs: "3"});
 
 obtenirQuestionParId = function(id) {
 	return questions[id];
@@ -95,6 +95,33 @@ questionAleatoireRapide = function() {
 	return obtenirQuestionParId(myId)
 };
 
+// renvoie le tableau de questions
+initExam = function(categories, nbrQuestions) {
+	var examQuestions = [];
+    
+    // On ajoute d'abord toutes les questions correspondant
+    // aux catégories demandées
+    for(var i = 0; (i < questions.length); i++) {
+        if (categories.indexOf(questions[i].domain) != -1) {
+            examQuestions.push(questions[i]);
+        }
+    }
+    
+    // On enlève ensuite des questions aléatoirement
+    // pour avoir seulement nbrQuestions questions
+    while (examQuestions.length > nbrQuestions) {
+        examQuestions.splice(Math.floor(Math.random()*examQuestions.length),1);
+    }
+    
+    if (examQuestions.length < nbrQuestions) {
+        console.error("gestion_question.js: Pas assez de questions dispos dans la bdd!");
+        return;
+    }
+    
+    return examQuestions;
+}
+	
 // On exporte les fonctions qui nous interessent
 exports.obtenirQuestionParId = obtenirQuestionParId;
 exports.questionAleatoireRapide = questionAleatoireRapide;
+exports.initExam = initExam;

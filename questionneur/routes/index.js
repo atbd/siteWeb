@@ -11,22 +11,51 @@ router.get('/accueil', function(req, res) {
   res.render('accueil');
 });
 
-router.get('/question', function(req, res) {
-  q = db.questionAleatoireRapide();
+router.get('/question', function(req, res) {	
+  req.session.current = db.questionAleatoireRapide();
   res.render('question', { 
     url: req.originalUrl,
-	question: q
+	question: req.session.current
  });
 });
 
-router.post('/questionExamen', function(req, res) {
-	// Premier essai, pour la suite utiliser db
-	// (créer des fonctions dans lib/db.js, voir nos anciens scripts js)
-	console.log("HTML? => " + JSON.stringify(req.body.HTML));
-	console.log("CSS? => " + JSON.stringify(req.body.CSS));
-	console.log("JS => " + JSON.stringify(req.body.JS));
-	console.log("Number? => " + JSON.stringify(req.body.number));
+router.post('/question/corriger', function(req,res) {
+	console.log("reponse? => " + JSON.stringify(req.body.reponse));
+	if (req.body.reponse == req.session.current.answerIs)
+		console.log("reponse juste");
+	else
+		console.log("reponse fausse");
 	res.render('question');
+});
+
+router.post('/questionExamen', function(req, res) {
+	
+	var domaines = [];
+	if (req.body.HTML == "on")
+		domaines.push("HTML");
+	if (req.body.CSS == "on")
+		domaines.push("CSS");
+	if (req.body.JS == "on")
+		domaines.push("JS");
+	
+	console.log(domaines);
+	console.log("nb => " + req.body.number);
+	
+	var questions = initExam(domaines, req.body.number);
+	console.log(questions);
+	if (questions === undefined)
+	{
+		// TODO: mieux gérer l'erreur
+		console.log("pas assez de question dans la bdd");
+		res.redirect('tableauBord');
+	}
+	else
+	{
+		req.session.current = questions[0];
+		console.log("ok");
+		req.session.questionsExam = questions;
+		res.render('question', {question: req.session.current});
+	}
 });
 
 router.get('/questionExamen', function(req, res) {
