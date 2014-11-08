@@ -95,7 +95,7 @@ questionAleatoireRapide = function() {
 	return obtenirQuestionParId(myId)
 };
 
-// renvoie le tableau de questions
+// renvoie le tableau d'id questions
 initExam = function(categories, nbrQuestions) {
 	var examQuestions = [];
     
@@ -103,7 +103,7 @@ initExam = function(categories, nbrQuestions) {
     // aux catégories demandées
     for(var i = 0; (i < questions.length); i++) {
         if (categories.indexOf(questions[i].domain) != -1) {
-            examQuestions.push(questions[i]);
+            examQuestions.push(questions[i].id);
         }
     }
     

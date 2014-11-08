@@ -11,25 +11,26 @@ router.get('/accueil', function(req, res) {
   res.render('accueil');
 });
 
-router.get('/question', function(req, res) {	
-  req.session.current = db.questionAleatoireRapide();
+router.get('/question', function(req, res) {
   res.render('question', { 
     url: req.originalUrl,
-	question: req.session.current
+	question: db.questionAleatoireRapide()
  });
 });
 
 router.post('/question/corriger', function(req,res) {
-	console.log("reponse? => " + JSON.stringify(req.body.reponse));
-	if (req.body.reponse == req.session.current.answerIs)
-		console.log("reponse juste");
-	else
-		console.log("reponse fausse");
+	// TODO !!!
+//	console.log("reponse? => " + JSON.stringify(req.body.reponse));
+//	if (req.body.reponse == req.session.current.answerIs)
+//		console.log("reponse juste");
+//	else
+//		console.log("reponse fausse");
+//	res.send({reponse: req.body.reponse});
 	res.render('question');
 });
 
 router.post('/questionExamen', function(req, res) {
-	
+
 	var domaines = [];
 	if (req.body.HTML == "on")
 		domaines.push("HTML");
@@ -37,31 +38,46 @@ router.post('/questionExamen', function(req, res) {
 		domaines.push("CSS");
 	if (req.body.JS == "on")
 		domaines.push("JS");
+
+	// On récupère les id des questions de l'exam
+	var idQuestions = db.initExam(domaines, req.body.number);
 	
-	console.log(domaines);
-	console.log("nb => " + req.body.number);
-	
-	var questions = initExam(domaines, req.body.number);
-	console.log(questions);
-	if (questions === undefined)
+	if (idQuestions === undefined)
 	{
 		// TODO: mieux gérer l'erreur
-		console.log("pas assez de question dans la bdd");
+		console.log("Pas assez de question dans la bdd");
 		res.redirect('tableauBord');
 	}
 	else
 	{
-		req.session.current = questions[0];
-		console.log("ok");
-		req.session.questionsExam = questions;
-		res.render('question', {question: req.session.current});
+		// Enregistrement dans session
+		req.session.domaines = domaines;
+		req.session.idQuestions = idQuestions;
+		req.session.number = req.body.number;
+		res.redirect('questionExamen');
 	}
 });
 
+router.post('/questionExamen/corriger', function(req, res) {
+	//TODO !
+	res.redirect('../questionExamen');
+});
+
 router.get('/questionExamen', function(req, res) {
-  res.render('question', { 
-  url: req.originalUrl
- });
+
+	if (req.session.examcurrent === undefined)
+		req.session.examcurrent = 0;
+	else
+		req.session.examcurrent++;
+		
+	if (req.session.examcurrent >= req.session.number)
+		res.redirect('examenTermine');
+	else {
+  	res.render('question', { 
+  		url: req.originalUrl,
+  		question: db.obtenirQuestionParId(req.session.idQuestions[req.session.examcurrent])
+  		});
+  	}
 });
 
 router.get('/examenTermine', function(req, res) {
