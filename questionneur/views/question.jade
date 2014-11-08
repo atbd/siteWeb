@@ -22,13 +22,13 @@ block content
 				| Domaine #{question.domain}
 			p
 				i Question : #{question.text}
-			each answer, index in question.answers
-				input(type='radio', name='reponse', value="#{index}")
-				label(for="#{index}") #{answer}
-				br
-		a#retour.button(href='/tableauBord')
-			= changement.retour
-		a#next.button Corriger
+			form(method='POST', action="#{url}/corriger")
+				each answer, index in question.answers
+					input(type='radio', name="reponse", value="#{index}")
+					label(for="#{index}") #{answer}
+					br
+				input.button#next(type='submit', value='Corriger')
+				input.button#retour(type='submit', value="#{changement.retour}")
 	aside
 		h2 Statistiques
 		p Note courante :

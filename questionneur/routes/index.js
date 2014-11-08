@@ -26,7 +26,7 @@ router.post('/question/corriger', function(req,res) {
 //	else
 //		console.log("reponse fausse");
 //	res.send({reponse: req.body.reponse});
-	res.render('question');
+	res.render('question', {url: '/question', question: db.questionAleatoireRapide()});
 });
 
 router.post('/questionExamen', function(req, res) {
