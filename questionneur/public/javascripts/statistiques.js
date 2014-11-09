@@ -5,7 +5,11 @@
  *
  */
 
-function afficherStatsRapide() {
+$(document).ready(function() {
+	afficherStats();
+});
+
+function afficherStats() {
 
     // Affichage des résultats des tests rapides
 	
@@ -14,13 +18,23 @@ function afficherStatsRapide() {
 	
 	    } else {
 
-	    var repJuste = localStorage.getItem("justeRapide");
-        var repTotal = localStorage.getItem("totalRapide");
+	    var justeRapide = localStorage.getItem("justeRapide");
+        var totalRapide = localStorage.getItem("totalRapide");
+        var totalRapideCourant = localStorage.getItem("totalRapideCourant");
+        var justeRapideCourant = localStorage.getItem("justeRapideCourant");
 
-        repJuste = (parseInt(repJuste)).toString();
-        repTotal = (parseInt(repTotal)).toString();
+        justeRapide = parseInt(justeRapide);
+        totalRapide = parseInt(totalRapide);
+        totalRapideCourant = parseInt(totalRapideCourant);
+        justeRapideCourant = parseInt(justeRapideCourant);
+        
+        totalRapide += totalRapideCourant;
+        justeRapide += justeRapideCourant;
+        
+        localStorage.setItem("totalRapide", totalRapide.toString());
+        localStorage.setItem("justeRapide", justeRapide.toString());
 
-	    $('#cumulRapide').text(repJuste + "/" + repTotal);
+	    $('#cumulRapide').text(justeRapide + "/" + totalRapide);
     }
 
 	// Pour l'affichage des résultats d'examens
@@ -32,7 +46,7 @@ function afficherStatsRapide() {
 	
 		if (totalExamCourant != "X") {
 	
-			totalExam = parseInt(total);
+			totalExam = parseInt(totalExam);
 			justeExam = parseInt(justeExam);
 			totalExamCourant = parseInt(totalExamCourant);
 			justeExamCourant = parseInt(justeExamCourant);
@@ -40,11 +54,11 @@ function afficherStatsRapide() {
 			totalExam += totalExamCourant;
 			justeExam += justeExamCourant;
 	
-			localStorage.setItem("total", total.toString());
+			localStorage.setItem("totalExam", totalExam.toString());
 			localStorage.setItem("justeExam", justeExam.toString());
 		}
 	
-		if (total != 0) {
+		if (totalExam != 0) {
 			var pourcentage = ((justeExam/totalExam)*100).toString();
 			$('#cumulExam').text(pourcentage + "% correct");
 		} else {
@@ -52,7 +66,9 @@ function afficherStatsRapide() {
 		}
 	
 		localStorage.setItem("totalExamCourant", "0");
-		localStorage.setItem("justeExamCourant", "0");	
+		localStorage.setItem("justeExamCourant", "0");
+		localStorage.setItem("totalRapideCourant", "0");
+		localStorage.setItem("justeRapideCourant", "0");	
 	
 		stats();
 	

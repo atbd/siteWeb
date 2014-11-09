@@ -28,6 +28,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false // on empeche le navigateur de renvoyer le formulaire
 	});
+	majNote();
 });
 
 /*
@@ -43,13 +44,16 @@ function correctAnswers(data) {
 	// On ajoute la classe false (css->fond rouge) à la réponse fausse
 	if (data.answerSent != data.answerIs) {
 		$("label[for=" + data.answerSent + "]").addClass('false');
-	} else { // si la réponse est juste si j'ai bien compris ? => tu as compris :)
-		var justeRapideCourant = localStorage.getItem("justeRapideCourant");
-		justeRapideCourant ++;
+	} else { // si la réponse est juste
+		var justeRapideCourant = parseInt(localStorage.getItem("justeRapideCourant"));
+		justeRapideCourant +=1;
+		localStorage.setItem("justeRapideCourant", justeRapideCourant.toString());
 	}
 	
-	var totalRapideCourant = localStorage.getItem("totalRapideCourant");
-	totalRapideCourant ++;
+	var totalRapideCourant = parseInt(localStorage.getItem("totalRapideCourant"));
+	totalRapideCourant +=1;
+	
+	localStorage.setItem("totalRapideCourant", totalRapideCourant.toString());
 	
     changeButton();
 }
@@ -66,7 +70,16 @@ function changeButton() {
      	// window.location.pathname renvoie 'question' ou 'questionExamen'
      	window.location.href = window.location.pathname;
      });
+     majNote();
 }
+
+function majNote() {
+    repJuste = localStorage.getItem("justeRapideCourant");
+    repTotal = localStorage.getItem("totalRapideCourant");
+
+    $('#noteCourante').text(repJuste + "/" + repTotal);
+}
+
 
 // EN DESSOUS ANCIEN CODE
 
