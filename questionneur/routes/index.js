@@ -21,12 +21,13 @@ router.get('/question', function(req, res) {
 });
 
 router.post('/question/corriger', function(req,res) {
-	// TODO !!!
+	// On envoie la bonne réponse et la réponse qui a été soumise
+	// Le reste se fait côté client pour le moment
+	// TODO: Il faudrait tester si la réponse envoyée n'est pas vide (pour éviter la triche)
 	res.send({
 		"answerSent": req.body.reponse,
 		"answerIs": req.session.current.answerIs}
 	);
-	//res.render('question', {url: '/question', question: db.questionAleatoireRapide()});
 });
 
 router.post('/questionExamen', function(req, res) {

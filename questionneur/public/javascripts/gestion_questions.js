@@ -6,14 +6,14 @@
 
 /*
  * Vérifie qu'une réponse est bien choisie
- * et effectue la correction si c'est le cas
+ * et si c'est le cas effectue une requete ajax pour récupérer la réponse
  */
 $(document).ready(function() {
 	$('form').submit( function (e) {
 		if ($("input[type='radio']:checked").length == 0) {
 			alert("Veuillez choisir une réponse");
 		}
-		else {
+		else if ($('#next').val() != 'Question suivante') {
 			// Requete ajax post qui nous permet de recuperer la bonne reponse
 			var reponse = $.ajax({
 				type: 'POST',
@@ -30,11 +30,20 @@ $(document).ready(function() {
 	});
 });
 
+/*
+ * Callback de la requete ajax
+ * Corrige la question (fond vert/rouge)
+ * appel de fonctions pour les stats et se tenir pret à passer à la question suivante
+ */
 function correctAnswers(data) {
+
+	// On ajoute la classe true (css->fond vert) à la vraie réponse
 	$("label[for=" + data.answerIs + "]").addClass('true');
+	
+	// On ajoute la classe false (css->fond rouge) à la réponse fausse
 	if (data.answerSent != data.answerIs) {
 		$("label[for=" + data.answerSent + "]").addClass('false');
-	} else { // si la réponse est juste si j'ai bien compris ?
+	} else { // si la réponse est juste si j'ai bien compris ? => tu as compris :)
 		var justeRapideCourant = localStorage.getItem("justeRapideCourant");
 		justeRapideCourant ++;
 	}
@@ -42,9 +51,20 @@ function correctAnswers(data) {
 	var totalRapideCourant = localStorage.getItem("totalRapideCourant");
 	totalRapideCourant ++;
 	
-	// TODO: modifier le bouton pour continuer (voir ancien code)
+    changeButton();
 }
 
+function changeButton() {
+	/* On utilise le même bouton pour la correction et le passage à la question
+     * suivante, on doit donc enmpêcher à nouveau le submit
+     * Note : ce n'est pas du tout élégant
+     */
+     $('#next').val('Question suivante');
+     $('form').submit( function (e) {
+     	e.preventDefault();
+     	window.location.href = 'question';
+     });
+}
 
 // EN DESSOUS ANCIEN CODE
 
