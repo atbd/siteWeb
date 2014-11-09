@@ -4,18 +4,18 @@ $(document).ready(function () {
 
 	var tmp = [];
 
-	var repJusteExam = localStorage.getItem("repJusteExam");
-	var repTotalExam = localStorage.getItem("repTotalExam");
+	var justeExamCourant = localStorage.getItem("justeExamCourant");
+	var totalExamCourant = localStorage.getItem("totalExamCourant");
 
-    if (repTotalExam != "X") {
-	    repJusteExam = (parseInt(repJusteExam)).toString();
-	    repTotalExam = (parseInt(repTotalExam)).toString();
+    if (totalExamCourant != "X") {
+	    justeExamCourant = (parseInt(justeExamCourant)).toString();
+	    totalExamCourant = (parseInt(totalExamCourant)).toString();
     }
 
 	var cat = localStorage.getItem("categorie");
 	var nbr = localStorage.getItem("nbrQuestions");
 
-	tmp = [repJusteExam, repTotalExam, nbr, cat];
+	tmp = [justeExamCourant, totalExamCourant, nbr, cat];
 
 	var tableauExam = [];
 
@@ -30,11 +30,11 @@ $(document).ready(function () {
 
 	localStorage.setItem("tableauExam", JSON.stringify(tableauExam));
 
-	$('#noteExam').text(repJusteExam + "/" + repTotalExam);
+	$('#noteExam').text(justeExamCourant + "/" + totalExamCourant);
 });
 
 $(document).ready(function message() {
-    var reussite = parseInt(localStorage.getItem("repJusteExam"))/parseInt(localStorage.getItem("repTotalExam"));
+    var reussite = parseInt(localStorage.getItem("justeExamCourant"))/parseInt(localStorage.getItem("totalExamCourant"));
     if (reussite < 0.25)
         $('#msg_results').append("<br>Résultats très insuffisants. Révisez votre cours !");
     else if (reussite >= 0.25 && reussite < 0.5)

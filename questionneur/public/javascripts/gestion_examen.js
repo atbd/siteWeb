@@ -5,76 +5,7 @@
  *
  */
 
-function initExam() {
-    //alert("init");
-    var cat = localStorage.getItem("categorie");
-    cat = cat.split(",");
-    var nbr = localStorage.getItem("nbrQuestions");
 
-    questionsExam = getExamQuestions(cat, nbr);    
-    var nextQuestion = questionsExam.pop();
-    localStorage.setItem("idQuestion", nextQuestion.id);
-    replaceQuestion(nextQuestion);
-    $('#next').click(correctAnswerExam);
-}
-
-/*
- * Renvoit des questions correspondant aux critères d'un examen
- */
-function getExamQuestions(categories, nbrQuestions) {
-    var examQuestions = [];
-    
-    // On ajoute d'abord toutes les questions correspondant
-    // aux catégories demandées
-    for(var i = 0; (i < questions.length); i++) {
-        if (categories.indexOf(questions[i].domain) != -1) {
-            examQuestions.push(questions[i]);
-        }
-    }
-    
-    // On enlève ensuite des questions aléatoirement
-    // pour avoir seulement nbrQuestions questions
-    while (examQuestions.length > nbrQuestions) {
-        examQuestions.splice(Math.floor(Math.random()*examQuestions.length),1);
-    }
-    
-    if (examQuestions.length < nbrQuestions) {
-        alert("gestion_question.js: Pas assez de questions dispos dans la bdd!");
-        return;
-    }
-    
-    return examQuestions;
-}
-
-/* 
- * Passe à la question suivante en sauvegardant les réponses
- */
-function gotoNextQuestionExam() {
-    
-    // On pop le tableau de questions de l'examen
-    //alert("coucou");
-    var nextQuestion = questionsExam.pop();
-    
-    // On teste si on n'a pas fini l'examen
-    if (typeof(nextQuestion) == "undefined")
-    {
-        //alert("c'est la fin!");
-        thisIsTheEnd();
-        return;
-    }
-    
-    // Si non, on continue
-    $("input[type='radio']:checked").prop('checked',false);
-    $('label').css('background-color','white');
-    
-    localStorage.setItem("idQuestion", nextQuestion.id);
-    replaceQuestion(nextQuestion);
-    
-    $('#next').text("Corriger");
-    $('#next').off("click");
-    $('#next').click(correctAnswerExam);
-    majNoteExam();
-} 
 
 /*
  * Correction des réponses et gestion du bouton question suivante/corriger/fin exam
@@ -107,18 +38,6 @@ function correctAnswerExam() {
     }
     repTotalExam += 1;
     
-    /* // Je ne comprends pas le but de ce code, tout marche bien sans maintenant
-    var nbr = parseInt(localStorage.getItem("nbrQuestions"));
-    var repTotal2 = repTotal/2;
-
-    if (repTotal2 <= (nbr-0.5)) {   // n'affiche pas "Terminé" mais fait ce qu'on lui dit sinon...
-        $('#next').text("Question suivante");
-        $('#next').click(gotoNextQuestionExam);
-    }
-    else {
-        thisIsTheEnd();
-    }
-    */
         
     localStorage.setItem("repJusteExam", repJusteExam.toString());
     localStorage.setItem("repTotalExam", repTotalExam.toString());
@@ -134,23 +53,6 @@ function correctAnswerExam() {
     $('#next').click(gotoNextQuestionExam);
 }
 
-function majNoteExam() {
-    repJusteExam = localStorage.getItem("repJusteExam");
-    repTotalExam = localStorage.getItem("repTotalExam");
-
-    repJusteExam = (parseInt(repJusteExam)).toString();
-    repTotalExam = (parseInt(repTotalExam)).toString();
-
-    $('#noteCourante').text(repJusteExam + "/" + repTotalExam);
-}
-
-/*
- * Fin de l'examen
- */
-function thisIsTheEnd() {
-    $('#next').text("Terminé !");
-    $('#next').attr("href", "examenTermine.html");
-}
 
 /*
  * Si l'utilisateur abandonne l'examen en cours de route

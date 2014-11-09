@@ -28,7 +28,16 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false // on empeche le navigateur de renvoyer le formulaire
 	});
-	majNote();
+	
+	if (window.location.pathname == '/question') {
+		var justeString = "justeRapideCourant";
+		var totalString = "totalRapideCourant";
+	} else {
+		var justeString = "justeExamCourant";
+		var totalString = "totalExamCourant";
+	}
+	
+	majNote(justeString, totalString);
 });
 
 /*
@@ -41,21 +50,32 @@ function correctAnswers(data) {
 	// On ajoute la classe true (css->fond vert) à la vraie réponse
 	$("label[for=" + data.answerIs + "]").addClass('true');
 	
+	if (window.location.pathname == '/question') {
+		var justeString = "justeRapideCourant";
+		var totalString = "totalRapideCourant";
+	} else {
+		var justeString = "justeExamCourant";
+		var totalString = "totalExamCourant";
+	}
+	
+	var justeCourant = parseInt(localStorage.getItem(justeString));
+	var totalCourant = parseInt(localStorage.getItem(totalString));
+	
 	// On ajoute la classe false (css->fond rouge) à la réponse fausse
 	if (data.answerSent != data.answerIs) {
 		$("label[for=" + data.answerSent + "]").addClass('false');
 	} else { // si la réponse est juste
-		var justeRapideCourant = parseInt(localStorage.getItem("justeRapideCourant"));
-		justeRapideCourant +=1;
-		localStorage.setItem("justeRapideCourant", justeRapideCourant.toString());
+		//var justeCourant = parseInt(localStorage.getItem("justeCourant"));
+		justeCourant +=1;
+		localStorage.setItem(justeString, justeCourant.toString());
 	}
 	
-	var totalRapideCourant = parseInt(localStorage.getItem("totalRapideCourant"));
-	totalRapideCourant +=1;
+	totalCourant +=1;
 	
-	localStorage.setItem("totalRapideCourant", totalRapideCourant.toString());
+	localStorage.setItem(totalString, totalCourant.toString());
 	
     changeButton();
+    majNote(justeString, totalString);
 }
 
 function changeButton() {
@@ -70,12 +90,11 @@ function changeButton() {
      	// window.location.pathname renvoie 'question' ou 'questionExamen'
      	window.location.href = window.location.pathname;
      });
-     majNote();
 }
 
-function majNote() {
-    repJuste = localStorage.getItem("justeRapideCourant");
-    repTotal = localStorage.getItem("totalRapideCourant");
+function majNote(justeString, totalString) {
+    repJuste = localStorage.getItem(justeString);
+    repTotal = localStorage.getItem(totalString);
 
     $('#noteCourante').text(repJuste + "/" + repTotal);
 }
