@@ -62,7 +62,9 @@ function changeButton() {
      $('#next').val('Question suivante');
      $('form').submit( function (e) {
      	e.preventDefault();
-     	window.location.href = 'question';
+     	// On va vers la question suivante, donc vers question ou questionExamen
+     	// window.location.pathname renvoie 'question' ou 'questionExamen'
+     	window.location.href = window.location.pathname;
      });
 }
 

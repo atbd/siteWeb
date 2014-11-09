@@ -61,8 +61,10 @@ router.post('/questionExamen', function(req, res) {
 });
 
 router.post('/questionExamen/corriger', function(req, res) {
-	//TODO !
-	res.redirect('../question/');
+	// Pas de différence avec question pour le moment
+	// mais on en aura peut-être dans les prochains tp si on fait plus
+	// de choses côté serveur
+	res.redirect('../question/corriger');
 });
 
 router.get('/questionExamen', function(req, res) {
