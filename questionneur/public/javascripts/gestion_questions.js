@@ -15,12 +15,14 @@ $(document).ready(function() {
 		}
 		else {
 			// Requete ajax post qui nous permet de recuperer la bonne reponse
-			$.ajax({
+			var reponse = $.ajax({
 				type: 'POST',
 				url: 'question/corriger',//à adapter si examen
 				data: $('form').serialize(),
-				success: correctAnswers,
-				datatype: 'json'
+				datatype: 'json',
+				success: function (data) {
+					correctAnswers(data);
+					}
 			});
 		}
 		e.preventDefault();
@@ -30,8 +32,15 @@ $(document).ready(function() {
 
 function correctAnswers(data) {
 	$("label[for=" + data.answerIs + "]").addClass('true');
-	if (data.answerSent != data.answerIs)
+	if (data.answerSent != data.answerIs) {
 		$("label[for=" + data.answerSent + "]").addClass('false');
+	} else { // si la réponse est juste si j'ai bien compris ?
+		var justeRapideCourant = localStorage.getItem("justeRapideCourant");
+		justeRapideCourant ++;
+	}
+	
+	var totalRapideCourant = localStorage.getItem("totalRapideCourant");
+	totalRapideCourant ++;
 	
 	// TODO: modifier le bouton pour continuer (voir ancien code)
 }

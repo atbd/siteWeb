@@ -5,17 +5,17 @@
  *
  */
 
-function afficherStats() {
+function afficherStatsRapide() {
 
     // Affichage des résultats des tests rapides
 	
-    if (localStorage.getItem("repTotal")==null) {
+    if (localStorage.getItem("totalRapide")==null) {
 	    $('#cumulRapide').text("Pas encore de test effectué.");
 	
 	    } else {
 
-	    var repJuste = localStorage.getItem("repJuste");
-        var repTotal = localStorage.getItem("repTotal");
+	    var repJuste = localStorage.getItem("justeRapide");
+        var repTotal = localStorage.getItem("totalRapide");
 
         repJuste = (parseInt(repJuste)).toString();
         repTotal = (parseInt(repTotal)).toString();
@@ -23,55 +23,40 @@ function afficherStats() {
 	    $('#cumulRapide').text(repJuste + "/" + repTotal);
     }
 
-    if (localStorage.getItem("repJusteExam")==null) {
-        localStorage.setItem("repJusteExam", 0);
-    }
-
-    if (localStorage.getItem("repTotalExam")==null) {
-        localStorage.setItem("repTotalExam", 0);
-    }
-
-    if (localStorage.getItem("totalJuste")==null) {	
-	    localStorage.setItem("totalJuste", 0);
-    }
-
-    if (localStorage.getItem("total")==null) {
-	    localStorage.setItem("total", 0);
-    }	
-
-    // Pour l'affichage des résultats d'examens
-
-    var repTotalExam = localStorage.getItem("repTotalExam");
-    var repJusteExam = localStorage.getItem("repJusteExam");
-    var total = localStorage.getItem("total");
-    var totalJuste = localStorage.getItem("totalJuste");
-
-    if (repTotalExam != "X") {
-
-	    total = parseInt(total);
-	    totalJuste = parseInt(totalJuste);
-	    repTotalExam = parseInt(repTotalExam);
-	    repJusteExam = parseInt(repJusteExam);
-
-	    total += repTotalExam;
-	    totalJuste += repJusteExam;
-
-	    localStorage.setItem("total", total.toString());
-	    localStorage.setItem("totalJuste", totalJuste.toString());
-    }
-
-	if (total != 0) {
-		var pourcentage = ((totalJuste/total)*100).toString();
-		$('#cumulExam').text(pourcentage + "% correct");
-	} else {
-		$('#cumulExam').text("Pas encore d'examen effectué");
-	}
-
-	localStorage.setItem("repTotalExam", "0");
-	localStorage.setItem("repJusteExam", "0");	
-
-	stats();
-};
+	// Pour l'affichage des résultats d'examens
+	
+		var totalExamCourant = localStorage.getItem("totalExamCourant");
+		var justeExamCourant = localStorage.getItem("justeExamCourant");
+		var totalExam = localStorage.getItem("totalExam");
+		var justeExam = localStorage.getItem("justeExam");
+	
+		if (totalExamCourant != "X") {
+	
+			totalExam = parseInt(total);
+			justeExam = parseInt(justeExam);
+			totalExamCourant = parseInt(totalExamCourant);
+			justeExamCourant = parseInt(justeExamCourant);
+	
+			totalExam += totalExamCourant;
+			justeExam += justeExamCourant;
+	
+			localStorage.setItem("total", total.toString());
+			localStorage.setItem("justeExam", justeExam.toString());
+		}
+	
+		if (total != 0) {
+			var pourcentage = ((justeExam/totalExam)*100).toString();
+			$('#cumulExam').text(pourcentage + "% correct");
+		} else {
+			$('#cumulExam').text("Pas encore d'examen effectué");
+		}
+	
+		localStorage.setItem("totalExamCourant", "0");
+		localStorage.setItem("justeExamCourant", "0");	
+	
+		stats();
+	
+}
 
 /*
  * Pour le bouton de remise à zero
