@@ -28,7 +28,8 @@ block content
 					label(for="#{index}") #{answer}
 					br
 				input.button#next(type='submit', value='Corriger')
-				input.button#retour(type='submit', value="#{changement.retour}")
+				a#retour.button(href='/tableauBord')
+					= changement.retour
 	aside
 		h2 Statistiques
 		p Note courante :

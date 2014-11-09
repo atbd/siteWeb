@@ -43,6 +43,18 @@ label
 	width: 60%;
 }
 
+/*
+ *	Reponse juste et fausse
+ */
+
+.true {
+	background-color: green;
+}
+
+.false {
+	background-color: red;
+}
+
 @media screen and (max-width: 1024px)
 {
 	.button

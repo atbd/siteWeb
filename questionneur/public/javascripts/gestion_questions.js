@@ -5,24 +5,36 @@
  */
 
 /*
- * Correction côté client (TP4)
- */
- 
-//TODO
-
-/*
  * Vérifie qu'une réponse est bien choisie
+ * et effectue la correction si c'est le cas
  */
 $(document).ready(function() {
 	$('form').submit( function (e) {
 		if ($("input[type='radio']:checked").length == 0) {
 			alert("Veuillez choisir une réponse");
-			e.preventDefault();
 		}
+		else {
+			// Requete ajax post qui nous permet de recuperer la bonne reponse
+			$.ajax({
+				type: 'POST',
+				url: 'question/corriger',//à adapter si examen
+				data: $('form').serialize(),
+				success: correctAnswers,
+				datatype: 'json'
+			});
+		}
+		e.preventDefault();
+		return false // on empeche le navigateur de renvoyer le formulaire
 	});
 });
 
-
+function correctAnswers(data) {
+	$("label[for=" + data.answerIs + "]").addClass('true');
+	if (data.answerSent != data.answerIs)
+		$("label[for=" + data.answerSent + "]").addClass('false');
+	
+	// TODO: modifier le bouton pour continuer (voir ancien code)
+}
 
 
 // EN DESSOUS ANCIEN CODE

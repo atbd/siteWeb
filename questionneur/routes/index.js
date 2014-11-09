@@ -1,6 +1,6 @@
 var express = require('express');
-var router = express.Router();
 var db = require('../lib/db');
+var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -12,21 +12,21 @@ router.get('/accueil', function(req, res) {
 });
 
 router.get('/question', function(req, res) {
-  res.render('question', { 
-    url: req.originalUrl,
-	question: db.questionAleatoireRapide()
+	var current = db.questionAleatoireRapide();
+	req.session.current = current;
+  	res.render('question', { 
+		url: req.originalUrl,
+		question: current
  });
 });
 
 router.post('/question/corriger', function(req,res) {
 	// TODO !!!
-//	console.log("reponse? => " + JSON.stringify(req.body.reponse));
-//	if (req.body.reponse == req.session.current.answerIs)
-//		console.log("reponse juste");
-//	else
-//		console.log("reponse fausse");
-//	res.send({reponse: req.body.reponse});
-	res.render('question', {url: '/question', question: db.questionAleatoireRapide()});
+	res.send({
+		"answerSent": req.body.reponse,
+		"answerIs": req.session.current.answerIs}
+	);
+	//res.render('question', {url: '/question', question: db.questionAleatoireRapide()});
 });
 
 router.post('/questionExamen', function(req, res) {
@@ -54,30 +54,30 @@ router.post('/questionExamen', function(req, res) {
 		req.session.domaines = domaines;
 		req.session.idQuestions = idQuestions;
 		req.session.number = req.body.number;
+		req.session.indexCurrent = -1;// index dans le tableau idQuestions
 		res.redirect('questionExamen');
 	}
 });
 
 router.post('/questionExamen/corriger', function(req, res) {
 	//TODO !
-	res.redirect('../questionExamen');
+	res.redirect('../question/');
 });
 
 router.get('/questionExamen', function(req, res) {
 
-	if (req.session.examcurrent === undefined)
-		req.session.examcurrent = 0;
-	else
-		req.session.examcurrent++;
+	req.session.indexCurrent++;
+	var index = req.session.indexCurrent;
 		
-	if (req.session.examcurrent >= req.session.number)
+	if (index >= req.session.number)
 		res.redirect('examenTermine');
 	else {
-  	res.render('question', { 
-  		url: req.originalUrl,
-  		question: db.obtenirQuestionParId(req.session.idQuestions[req.session.examcurrent])
-  		});
-  	}
+		req.session.current = db.obtenirQuestionParId(req.session.idQuestions[index]);
+	  	res.render('question', { 
+	  		url: req.originalUrl,
+	  		question: req.session.current
+	  	});
+	}
 });
 
 router.get('/examenTermine', function(req, res) {
