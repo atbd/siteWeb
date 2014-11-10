@@ -7,26 +7,19 @@ $(document).ready(function () {
 	var justeExamCourant = localStorage.getItem("justeExamCourant");
 	var totalExamCourant = localStorage.getItem("totalExamCourant");
 
-    if (totalExamCourant != "X") {
-	    justeExamCourant = (parseInt(justeExamCourant)).toString();
-	    totalExamCourant = (parseInt(totalExamCourant)).toString();
-    }
+	var cat = "test";//= localStorage.getItem("categorie");
 
-	var cat = localStorage.getItem("categorie");
-	var nbr = localStorage.getItem("nbrQuestions");
-
-	tmp = [justeExamCourant, totalExamCourant, nbr, cat];
+	tmp = [justeExamCourant, totalExamCourant, cat];
 
 	var tableauExam = [];
 
-	if (localStorage.getItem("tableauExam")==null) {
-		tableauExam.push(tmp);
-	} else {
+	if (localStorage.getItem("tableauExam")!=null) {
 		
 		tableauExam = localStorage.getItem("tableauExam");
 		tableauExam = JSON.parse(tableauExam);
-		tableauExam.push(tmp);
 	}
+	
+	tableauExam.push(tmp);
 
 	localStorage.setItem("tableauExam", JSON.stringify(tableauExam));
 

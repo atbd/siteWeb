@@ -62,9 +62,9 @@ $(document).ready(function () {
          
          // pour stocker tous les résultats d'exam
          
-         if (localStorage.getItem("tableauExam")==null) {
-             localStorage.setItem("tableauExam", 0);
-         }
+    //     if (localStorage.getItem("tableauExam")==null) {
+      //       localStorage.setItem("tableauExam", JSON.stringify(tableauExam));
+        // }
 });
 
 

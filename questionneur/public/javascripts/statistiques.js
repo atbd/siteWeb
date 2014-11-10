@@ -41,13 +41,11 @@ function afficherStats() {
 	
 		var totalExamCourant = localStorage.getItem("totalExamCourant");
 		var justeExamCourant = localStorage.getItem("justeExamCourant");
-		var totalExam = localStorage.getItem("totalExam");
-		var justeExam = localStorage.getItem("justeExam");
+		var totalExam = parseInt(localStorage.getItem("totalExam"));
+		var justeExam = parseInt(localStorage.getItem("justeExam"));
 	
 		if (totalExamCourant != "X") {
 	
-			totalExam = parseInt(totalExam);
-			justeExam = parseInt(justeExam);
 			totalExamCourant = parseInt(totalExamCourant);
 			justeExamCourant = parseInt(justeExamCourant);
 	
@@ -103,7 +101,7 @@ function stats() {
 		for (i = 0 ; i<nbrExam ; i++) {		// récupération de tous les résultats des différents examens
 			juste = tableauExam[i][0];
 			total = tableauExam[i][1];
-			domain = tableauExam[i][3];
+			domain = tableauExam[i][2];
 
 			textStat += "<li> Examen " + (i+1) + " (" + domain + ") :" + juste + "/" + total + "</li>";
 		}

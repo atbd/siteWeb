@@ -22,9 +22,6 @@ $(document).ready(function () {
 				window.location.reload();
 			});
 		}
-
-		localStorage.setItem('categorie', categorie);
-		localStorage.setItem('nbrQuestions', nbrQ);
 	}));
 });
 
