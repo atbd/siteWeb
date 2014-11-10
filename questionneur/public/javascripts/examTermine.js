@@ -6,24 +6,39 @@ $(document).ready(function () {
 
 	var justeExamCourant = localStorage.getItem("justeExamCourant");
 	var totalExamCourant = localStorage.getItem("totalExamCourant");
-
-	var cat = "test";//= localStorage.getItem("categorie");
-
-	tmp = [justeExamCourant, totalExamCourant, cat];
-
-	var tableauExam = [];
-
-	if (localStorage.getItem("tableauExam")!=null) {
-		
-		tableauExam = localStorage.getItem("tableauExam");
-		tableauExam = JSON.parse(tableauExam);
-	}
 	
-	tableauExam.push(tmp);
+	var cat;
+	var nbr;
+	var tmp = [];
+	var tableauExam = [];
+	
+	// on fait une requete pour recuperer les domaines
+	// (et le nombre de questions => non) de l'examen auquel on a repondu
+	// note : pas du tout optimisé
+	var reponse = $.ajax({
+				type: 'POST',
+				url: 'examenTermine',
+				datatype: 'json',
+				success: function (data) {
+					
+					cat = data.domaines;
+					alert(cat);
+					//nbr = data.nbrQuestions;
+					tmp = [justeExamCourant, totalExamCourant, cat];
 
-	localStorage.setItem("tableauExam", JSON.stringify(tableauExam));
+					if (localStorage.getItem("tableauExam")!=null) {
+		
+						tableauExam = localStorage.getItem("tableauExam");
+						tableauExam = JSON.parse(tableauExam);
+					}
+	
+					tableauExam.push(tmp);
 
-	$('#noteExam').text(justeExamCourant + "/" + totalExamCourant);
+					localStorage.setItem("tableauExam", JSON.stringify(tableauExam));
+					$('#noteExam').text(justeExamCourant + "/" + totalExamCourant);
+				}
+				
+	});
 });
 
 $(document).ready(function message() {
