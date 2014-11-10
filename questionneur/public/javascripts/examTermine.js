@@ -22,7 +22,6 @@ $(document).ready(function () {
 				success: function (data) {
 					
 					cat = data.domaines;
-					alert(cat);
 					//nbr = data.nbrQuestions;
 					tmp = [justeExamCourant, totalExamCourant, cat];
 

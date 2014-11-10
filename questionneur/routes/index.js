@@ -83,8 +83,17 @@ router.get('/questionExamen', function(req, res) {
 	}
 });
 
+router.post('/examenTermine', function(req,res) {
+	// On envoie des infos sur l'exam
+	res.send({
+		"domaines": req.session.domaines,
+		"nbrQuestions": req.session.nbrQuestions
+		}
+	);
+});
+
 router.get('/examenTermine', function(req, res) {
-  res.render('examenTermine');
+  	res.render('examenTermine');
 });
 
 router.get('/tableauBord', function(req, res) {
