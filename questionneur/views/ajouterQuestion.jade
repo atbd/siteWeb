@@ -8,34 +8,40 @@ block js
 block content
 	h1 Ajout de question
 	form(method='POST', action="#{url}/ajouterQuestion")
-		fieldset
-			#domaine
-				label(for="domain") Domain
-				input(type='text', name="domain", id="domain")
+		#jesaispasquelnomdonner
+			h2#domaine Domaine
 				br
+				label(for="HTML") HTML
+				input(type='radio', name="HTML", value="HTML")
+				br
+				label(for="CSS") CSS
+				input(type='radio', name="CSS", value="CSS")
+				br
+				label(for="JS") JS
+				input(type='radio', name="JS", value="JS")
 			#Q
 				label(for="question") Question
-				textarea#question
+				input(type='text', name="question", id="question")
 				br
-			#reponses
-				#rep1
-					label(for="reponse1") Reponse 1:
-					input(type='text', name="reponse1", id="reponse1")
-					br
-				#rep2
-					label(for="reponse2") Reponse 2:
-					input(type='text', name="reponse2", id="reponse2")
-					br
-				#rep3
-					label(for="reponse3") Reponse 3:
-					input(type='text', name="reponse3", id="reponse3")
-					br
-				#rep4
-					label(for="reponse4") Reponse 4:
-					input(type='text', name="reponse4", id="reponse4")
-					br
+		#reponses
+			#rep1
+				label(for="reponse1") Reponse 1:
+				input(type='text', name="reponse1", id="reponse1")
+				br
+			#rep2
+				label(for="reponse2") Reponse 2:
+				input(type='text', name="reponse2", id="reponse2")
+				br
+			#rep3
+				label(for="reponse3") Reponse 3:
+				input(type='text', name="reponse3", id="reponse3")
+				br
+			#rep4
+				label(for="reponse4") Reponse 4:
+				input(type='text', name="reponse4", id="reponse4")
+				br
 			#bonneR
 				label(for="bonneReponse") Bonne reponse
-				input(type='text', name="bonneReponse", id="bonneReponse")
+				input(name='number', type='number', min='1', max='4', value='1')
 				br
-			input.button#next(type='submit', value='Ajouter')
+		input.button#ajout(type='submit', value='Ajouter')

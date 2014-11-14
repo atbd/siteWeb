@@ -1,0 +1,26 @@
+label, input
+{
+	padding-right: 50px;
+	padding-bottom: 30px;
+}
+
+#reponses, #jesaispasquelnomdonner
+{
+	display: inline-block;	
+	vertical-align: top;
+}
+
+#jesaispasquelnomdonner
+{
+	margin-right: 10px;
+}
+
+#reponses
+{
+	margin-left: 200px;
+}
+
+#ajout
+{
+	display: block;
+}
