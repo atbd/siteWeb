@@ -1,23 +1,41 @@
 extends layout
 
 block deco
+	link(rel='stylesheet', href='/stylesheets/ajouterQuestion.css')
 
 block js
 
 block content
+	h1 Ajout de question
 	form(method='POST', action="#{url}/ajouterQuestion")
-	input(type='text', name="domain")
-	label(for="domain") Domain
-	br
-	input(type='text', name="question")
-	label(for="domain") Question
-	br
-	input(type='text', name="reponses")
-	label(for="domain") Reponses
-	br
-	input(type='text', name="bonneReponse")
-	label(for="domain") Bonne reponse
-	br
-	input.button#next(type='submit', value='Ajouter')
-	a#retour.button(href='/tableauBord')
-		= changement.retour
+		fieldset
+			#domaine
+				label(for="domain") Domain
+				input(type='text', name="domain", id="domain")
+				br
+			#Q
+				label(for="question") Question
+				textarea#question
+				br
+			#reponses
+				#rep1
+					label(for="reponse1") Reponse 1:
+					input(type='text', name="reponse1", id="reponse1")
+					br
+				#rep2
+					label(for="reponse2") Reponse 2:
+					input(type='text', name="reponse2", id="reponse2")
+					br
+				#rep3
+					label(for="reponse3") Reponse 3:
+					input(type='text', name="reponse3", id="reponse3")
+					br
+				#rep4
+					label(for="reponse4") Reponse 4:
+					input(type='text', name="reponse4", id="reponse4")
+					br
+			#bonneR
+				label(for="bonneReponse") Bonne reponse
+				input(type='text', name="bonneReponse", id="bonneReponse")
+				br
+			input.button#next(type='submit', value='Ajouter')
