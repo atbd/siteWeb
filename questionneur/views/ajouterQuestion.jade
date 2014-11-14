@@ -1,0 +1,23 @@
+extends layout
+
+block deco
+
+block js
+
+block content
+	form(method='POST', action="#{url}/ajouterQuestion")
+	input(type='text', name="domain")
+	label(for="domain") Domain
+	br
+	input(type='text', name="question")
+	label(for="domain") Question
+	br
+	input(type='text', name="reponses")
+	label(for="domain") Reponses
+	br
+	input(type='text', name="bonneReponse")
+	label(for="domain") Bonne reponse
+	br
+	input.button#next(type='submit', value='Ajouter')
+	a#retour.button(href='/tableauBord')
+		= changement.retour
