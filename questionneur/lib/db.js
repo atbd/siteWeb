@@ -16,14 +16,49 @@ var adress = '@ds053320.mongolab.com:53320/questions'
 // (Dé)connexion
 function connect() {
 	var url = 'mongodb://' + username + ':' + password + adress;
+	console.log(url);
 	mongoose.connect(url);
+	if (error) {
+		return console.log(error);
+	}
 }
 
 function disconnect() {
-	moongoose.disconnect();
+	mongoose.disconnect();
+}
+
+// Le schéma de notre bdd
+var questionsSchema = new Schema({
+	// id: c'est mongodb qui le crée
+	domain: String,
+	text: String,
+	answers: Array, //de Strings
+	answerIs: Number
+});
+
+// On lui associe un modèle
+var Question = mongoose.model('Question', questionsSchema);
+
+// Fonctions pour accéder/modifier la bdd
+function addQuestion(content) {
+	mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+	mongoose.connection.once('open', function callback () {
+		var q = new Question({
+			domain: content.domain,
+			text: content.text,
+			answers: content.answers,
+			answerIs: content.answerIs
+		});
+	
+		q.save(function (err) {
+			if (err)
+				return console.error(err);
+		});
+	});
 }
 
 // EN-DESSOUS, ANCIEN CODE
+/*
 questions = [];
   
 // Les questions (source : w3schools.com)
@@ -147,3 +182,7 @@ initExam = function(categories, nbrQuestions) {
 exports.obtenirQuestionParId = obtenirQuestionParId;
 exports.questionAleatoireRapide = questionAleatoireRapide;
 exports.initExam = initExam;
+*/
+exports.addQuestion = addQuestion;
+exports.connect = connect;
+exports.disconnect = disconnect;
