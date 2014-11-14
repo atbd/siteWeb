@@ -30,9 +30,28 @@ router.post('/question/corriger', function(req,res) {
 	);
 });
 
+// Page web pour ajouter des questions dans notre bdd Mongo
 router.get('/ajouterQuestion', function(req,res) {
 	res.render('ajouterQuestion');
 });
+
+router.post('/ajouterQuestion', function(req,res) {
+	// verifications sur la req
+	//TODO !
+	
+	// ajout question dans la bdd si ok
+	var content = {
+		domain: req.body.domain,
+		text: req.body.question,
+		answers: [req.body.reponse1,
+				  req.body.reponse2,
+				  req.body.reponse3,
+				  req.body.reponse4],
+		answerIs: req.body.bonneReponse
+	};
+	db.addQuestion(content);
+	res.redirect('ajouterQuestion');
+});	
 
 router.post('/questionExamen', function(req, res) {
 
