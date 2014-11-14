@@ -30,6 +30,10 @@ router.post('/question/corriger', function(req,res) {
 	);
 });
 
+router.get('/ajouterQuestion', function(req,res) {
+	res.render('/ajouterQuestion');
+});
+
 router.post('/questionExamen', function(req, res) {
 
 	var domaines = [];

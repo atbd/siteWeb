@@ -2,6 +2,28 @@
  * Base de données
  */
 
+// On utilise mongoose pour accéder à notre bdd mongodb
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+module.exports.mongoose = mongoose;
+module.exports.Schema = Schema;
+
+// Paramètres de connexion
+var username = "test"
+var password = "test"
+var adress = '@ds053320.mongolab.com:53320/questions'
+
+// (Dé)connexion
+function connect() {
+	var url = 'mongodb://' + username + ':' + password + adress;
+	mongoose.connect(url);
+}
+
+function disconnect() {
+	moongoose.disconnect();
+}
+
+// EN-DESSOUS, ANCIEN CODE
 questions = [];
   
 // Les questions (source : w3schools.com)
