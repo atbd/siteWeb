@@ -38,18 +38,26 @@ router.get('/ajouterQuestion', function(req,res) {
 router.post('/ajouterQuestion', function(req,res) {
 	// verifications sur la req
 	//TODO !
+	var categorie;
+	if (req.body.HTML == "HTML")
+		categorie = "HTML";
+	if (req.body.CSS == "CSS")
+		categorie = "CSS";
+	if (req.body.JS == "JS")
+		categorie = "JS";
 	
-	// ajout question dans la bdd si ok
 	var content = {
-		domain: req.body.domain,
+		domain: categorie,
 		text: req.body.question,
 		answers: [req.body.reponse1,
-				  req.body.reponse2,
-				  req.body.reponse3,
-				  req.body.reponse4],
-		answerIs: req.body.bonneReponse
+				      req.body.reponse2,
+				      req.body.reponse3,
+				      req.body.reponse4],
+		answerIs: req.body.bonneReponse-1
 	};
+	
 	db.addQuestion(content);
+	
 	res.redirect('ajouterQuestion');
 });	
 

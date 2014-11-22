@@ -13,18 +13,20 @@ var username = "test"
 var password = "test"
 var adress = '@ds053320.mongolab.com:53320/questions'
 
-// (Dé)connexion
+// Connexion
 function connect() {
 	var url = 'mongodb://' + username + ':' + password + adress;
-	console.log(url);
-	mongoose.connect(url);
-	if (error) {
-		return console.log(error);
-	}
+	console.log("Connexion à " + adress);
+	mongoose.connect(url, function(err) {
+    if (err) return console.error(err);
+  });
+  console.log("Connecté à " + adress);
 }
 
+// Déconnexion
 function disconnect() {
 	mongoose.disconnect();
+	console.log("Déconnecté");
 }
 
 // Le schéma de notre bdd
@@ -39,24 +41,31 @@ var questionsSchema = new Schema({
 // On lui associe un modèle
 var Question = mongoose.model('Question', questionsSchema);
 
-// Fonctions pour accéder/modifier la bdd
+// Ajout d'une question
 function addQuestion(content) {
-	mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-	mongoose.connection.once('open', function callback () {
-		var q = new Question({
-			domain: content.domain,
-			text: content.text,
-			answers: content.answers,
-			answerIs: content.answerIs
-		});
-	
-		q.save(function (err) {
-			if (err)
-				return console.error(err);
-		});
+  
+  connect();
+  console.log("Ajout dans la bdd");
+  console.log("+ Domaine : " + content.domain);
+  console.log("+ Question : " + content.text);
+  console.log("+ Reponses : " + content.answers);
+  console.log("+ Bonne réponse : " + content.answerIs);
+  
+	var q = new Question({
+		domain: content.domain,
+		text: content.text,
+		answers: content.answers,
+		answerIs: content.answerIs
 	});
-}
 
+	q.save(function (err) {
+		if (err) return console.error(err);
+		disconnect();
+	});
+	
+}  
+
+exports.addQuestion = addQuestion;
 // EN-DESSOUS, ANCIEN CODE
 /*
 questions = [];
@@ -183,6 +192,4 @@ exports.obtenirQuestionParId = obtenirQuestionParId;
 exports.questionAleatoireRapide = questionAleatoireRapide;
 exports.initExam = initExam;
 */
-exports.addQuestion = addQuestion;
-exports.connect = connect;
-exports.disconnect = disconnect;
+
