@@ -190,6 +190,13 @@ function questionAleatoireRapide(callback) {
   });
 }
 
+function obtenirNbrQuestionParDomaine(nomDomaine) {
+	Question.count({domain: nomDomaine}, function(err, count) {
+		return count;
+	});
+}
+
+exports.obtenirQuestionParDomaine = obtenirNbrQuestionParDomaine;
 exports.addQuestion = addQuestion;//asychrone
 exports.addEverything = addEverything;//asynchrone
 exports.obtenirQuestionParId = obtenirQuestionParId;// asynchrone
