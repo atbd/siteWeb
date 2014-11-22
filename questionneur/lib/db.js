@@ -166,8 +166,15 @@ function addEverything() {
   
 }
 
+function obtenirNbrQuestionParDomaine(nomDomaine) {
+	Question.count({domain: nomDomaine}, function(err, count) {
+		return count;
+	});
+}
+
 exports.addQuestion = addQuestion;
 exports.addEverything = addEverything;
+exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
 
 // EN-DESSOUS, ANCIEN CODE
 

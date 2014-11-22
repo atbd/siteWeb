@@ -99,3 +99,16 @@ function majNote(justeString, totalString) {
 
     $('#noteCourante').text(repJuste + "/" + repTotal);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
