@@ -13,25 +13,28 @@ var username = "test"
 var password = "test"
 var adress = '@ds053320.mongolab.com:53320/questions'
 
-// (Dé)connexion
+// Connexion
 function connect() {
 	var url = 'mongodb://' + username + ':' + password + adress;
-	console.log(url);
-	mongoose.connect(url);
-	if (error) {
-		return console.log(error);
-	}
+	console.log("Connexion à " + adress);
+	mongoose.connect(url, function(err) {
+    if (err) return console.error(err);
+  });
+  console.log("Connecté à " + adress);
 }
 
+// Déconnexion
 function disconnect() {
 	mongoose.disconnect();
+	console.log("Déconnecté");
 }
 
 // Le schéma de notre bdd
 var questionsSchema = new Schema({
 	// id: c'est mongodb qui le crée
+	// FIXME: empêcher les questions en double, là c'est censer marcher mais ça ne marche pas...
 	domain: String,
-	text: String,
+	text: {type: String, unique: true, dropDups: true},
 	answers: Array, //de Strings
 	answerIs: Number
 });
@@ -39,30 +42,35 @@ var questionsSchema = new Schema({
 // On lui associe un modèle
 var Question = mongoose.model('Question', questionsSchema);
 
-// Fonctions pour accéder/modifier la bdd
+// Ajout d'une question
 function addQuestion(content) {
-	mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-	mongoose.connection.once('open', function callback () {
-		var q = new Question({
-			domain: content.domain,
-			text: content.text,
-			answers: content.answers,
-			answerIs: content.answerIs
-		});
-	
-		q.save(function (err) {
-			if (err)
-				return console.error(err);
-		});
+  
+  connect();
+  console.log("Ajout dans la bdd");
+  console.log("+ Domaine : " + content.domain);
+  console.log("+ Question : " + content.text);
+  console.log("+ Reponses : " + content.answers);
+  console.log("+ Bonne réponse : " + content.answerIs);
+  
+	var q = new Question({
+		domain: content.domain,
+		text: content.text,
+		answers: content.answers,
+		answerIs: content.answerIs
 	});
-}
 
-// EN-DESSOUS, ANCIEN CODE
-/*
-questions = [];
+	q.save(function (err) {
+		if (err) return console.error(err);
+		disconnect();
+	});
+	
+}  
+
+// Notre ancien tableau de questions à insérer
+var questions = [];
   
 // Les questions (source : w3schools.com)
-questions.push({id: 0,
+questions.push({
 			domain: "HTML",
 			text: "Que signifie le sigle HTML ?",
 			answers: ["Hyperlinks and Text Markup Language",
@@ -70,7 +78,7 @@ questions.push({id: 0,
 			          "Hyper Text Markup Language",
 			          "Hotel Tango Mike Lima"],
 			answerIs: "2"});
-questions.push({id: 1,
+questions.push({
 			domain: "HTML",
 			text: "Qui « fait » les standards du web ?",
 			answers: ["Microsoft",
@@ -78,7 +86,7 @@ questions.push({id: 1,
 			          "Google",
 			          "Mozilla"],
 			answerIs: "1"});
-questions.push({id: 2,
+questions.push({
 			domain: "HTML",
 			text: "Choisissez le tag HTML correspondant au plus gros titre :",
 			answers: ["<head>",
@@ -86,7 +94,7 @@ questions.push({id: 2,
 			          "<heading>",
 			          "<h1>"],
 			answerIs: "3"});
-questions.push({id: 3,
+questions.push({
 			domain: "CSS",
 			text: "Que signifie CSS ?",
 			answers:["Carambar Sweet Shop",
@@ -94,7 +102,7 @@ questions.push({id: 3,
 			         "Collection of Style Sheets",
 			         "Cascading Style Sheets"],
 			answerIs: "3"});
-questions.push({id: 4,
+questions.push({
 			domain: "CSS",
 			text: "Quel sélecteur correspond aux liens qui sont enfants directs de paragraphes ?",
 			answers:["a",
@@ -102,7 +110,7 @@ questions.push({id: 4,
 			         "p > a",
 			         "p ~ a"],
 			answerIs: "2"});
-questions.push({id: 5,
+questions.push({
 			domain: "CSS",
 			text: "Quel attribut permet de changer la couleur d'arrière plan d'un bloc ?",
 			answers:["color",
@@ -110,7 +118,7 @@ questions.push({id: 5,
 			         "display",
 			         "background"],
 			answerIs: "1"});
-questions.push({id: 6,
+questions.push({
 			domain: "CSS",
 			text: ":hover est…",
 			answers:["un pseudo-élément ?",
@@ -118,7 +126,7 @@ questions.push({id: 6,
 			         "une pseudo-classe ?",
 			         "un attribut ?"],
 			answerIs: "2"});
-questions.push({id: 7,
+questions.push({
 			domain: "JS",
 			text: "Dans quel élément HTML place-t-on le JavaScript ?",
 			answers:["<script>",
@@ -126,7 +134,7 @@ questions.push({id: 7,
 			         "<javascript>",
 			         "<js>"],
 			answerIs: "0"});
-questions.push({id: 8,
+questions.push({
 			domain: "JS",
 			text: "Qu'est-ce que jQuery ?",
 			answers:["Une bibliothèque JavaScript",
@@ -134,7 +142,7 @@ questions.push({id: 8,
 			         "Un élément HTML",
 			         "Un sélecteur CSS"],
 			answerIs: "0"});
-questions.push({id: 9,
+questions.push({
 			domain: "JS",
 			text: "Qu'est-ce qui est interprété en premier dans un code JavaScript ?",
 			answers:["L'affectation des variables'",
@@ -143,6 +151,27 @@ questions.push({id: 9,
 			         "La déclaration des variables et des fonctions"],
 			answerIs: "3"});
 
+// Ajout de tout le tableau de questions
+function addEverything() {
+
+  connect();
+
+  // model.create() prend en argument un tableau et fait un appel à save pour chaque item
+  Question.create(questions, function(err) {
+    if (err) {
+      return console.error(err);
+    }
+    disconnect();
+  });
+  
+}
+
+exports.addQuestion = addQuestion;
+exports.addEverything = addEverything;
+
+// EN-DESSOUS, ANCIEN CODE
+
+/*
 obtenirQuestionParId = function(id) {
 	return questions[id];
 };
@@ -183,6 +212,4 @@ exports.obtenirQuestionParId = obtenirQuestionParId;
 exports.questionAleatoireRapide = questionAleatoireRapide;
 exports.initExam = initExam;
 */
-exports.addQuestion = addQuestion;
-exports.connect = connect;
-exports.disconnect = disconnect;
+

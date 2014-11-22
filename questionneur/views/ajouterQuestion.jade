@@ -8,7 +8,7 @@ block js
 
 block content
 	h1 Ajout de question
-	form(method='POST', action="#{url}/ajouterQuestion")
+	form(method='POST', action="/ajouterQuestion")
 		#jesaispasquelnomdonner
 			h2#domaine Domaine
 				br
@@ -43,6 +43,6 @@ block content
 				br
 			#bonneR
 				label(for="bonneReponse") Bonne reponse
-				input(name='number', type='number', min='1', max='4', value='1')
+				input(name='bonneReponse', type='number', min='1', max='4', value='1')
 				br
 		input.button#ajout(type='submit', value='Ajouter')
