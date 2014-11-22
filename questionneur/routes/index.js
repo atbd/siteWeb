@@ -109,7 +109,6 @@ router.post('/questionExamen/corriger', function(req, res) {
 });
 
 router.get('/questionExamen', function(req, res) {
-
 	req.session.indexCurrent++;
 	var index = req.session.indexCurrent;
 		
@@ -122,7 +121,7 @@ router.get('/questionExamen', function(req, res) {
 	  	  url: req.originalUrl,
 	  		question: req.session.current
 	  	});
-	  );
+	  });
 	}
 });
 
