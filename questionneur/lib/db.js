@@ -32,8 +32,9 @@ function disconnect() {
 // Le schéma de notre bdd
 var questionsSchema = new Schema({
 	// id: c'est mongodb qui le crée
+	// FIXME: empêcher les questions en double, là c'est censer marcher mais ça ne marche pas...
 	domain: String,
-	text: String,
+	text: {type: String, unique: true, dropDups: true},
 	answers: Array, //de Strings
 	answerIs: Number
 });
@@ -65,13 +66,11 @@ function addQuestion(content) {
 	
 }  
 
-exports.addQuestion = addQuestion;
-// EN-DESSOUS, ANCIEN CODE
-/*
-questions = [];
+// Notre ancien tableau de questions à insérer
+var questions = [];
   
 // Les questions (source : w3schools.com)
-questions.push({id: 0,
+questions.push({
 			domain: "HTML",
 			text: "Que signifie le sigle HTML ?",
 			answers: ["Hyperlinks and Text Markup Language",
@@ -79,7 +78,7 @@ questions.push({id: 0,
 			          "Hyper Text Markup Language",
 			          "Hotel Tango Mike Lima"],
 			answerIs: "2"});
-questions.push({id: 1,
+questions.push({
 			domain: "HTML",
 			text: "Qui « fait » les standards du web ?",
 			answers: ["Microsoft",
@@ -87,7 +86,7 @@ questions.push({id: 1,
 			          "Google",
 			          "Mozilla"],
 			answerIs: "1"});
-questions.push({id: 2,
+questions.push({
 			domain: "HTML",
 			text: "Choisissez le tag HTML correspondant au plus gros titre :",
 			answers: ["<head>",
@@ -95,7 +94,7 @@ questions.push({id: 2,
 			          "<heading>",
 			          "<h1>"],
 			answerIs: "3"});
-questions.push({id: 3,
+questions.push({
 			domain: "CSS",
 			text: "Que signifie CSS ?",
 			answers:["Carambar Sweet Shop",
@@ -103,7 +102,7 @@ questions.push({id: 3,
 			         "Collection of Style Sheets",
 			         "Cascading Style Sheets"],
 			answerIs: "3"});
-questions.push({id: 4,
+questions.push({
 			domain: "CSS",
 			text: "Quel sélecteur correspond aux liens qui sont enfants directs de paragraphes ?",
 			answers:["a",
@@ -111,7 +110,7 @@ questions.push({id: 4,
 			         "p > a",
 			         "p ~ a"],
 			answerIs: "2"});
-questions.push({id: 5,
+questions.push({
 			domain: "CSS",
 			text: "Quel attribut permet de changer la couleur d'arrière plan d'un bloc ?",
 			answers:["color",
@@ -119,7 +118,7 @@ questions.push({id: 5,
 			         "display",
 			         "background"],
 			answerIs: "1"});
-questions.push({id: 6,
+questions.push({
 			domain: "CSS",
 			text: ":hover est…",
 			answers:["un pseudo-élément ?",
@@ -127,7 +126,7 @@ questions.push({id: 6,
 			         "une pseudo-classe ?",
 			         "un attribut ?"],
 			answerIs: "2"});
-questions.push({id: 7,
+questions.push({
 			domain: "JS",
 			text: "Dans quel élément HTML place-t-on le JavaScript ?",
 			answers:["<script>",
@@ -135,7 +134,7 @@ questions.push({id: 7,
 			         "<javascript>",
 			         "<js>"],
 			answerIs: "0"});
-questions.push({id: 8,
+questions.push({
 			domain: "JS",
 			text: "Qu'est-ce que jQuery ?",
 			answers:["Une bibliothèque JavaScript",
@@ -143,7 +142,7 @@ questions.push({id: 8,
 			         "Un élément HTML",
 			         "Un sélecteur CSS"],
 			answerIs: "0"});
-questions.push({id: 9,
+questions.push({
 			domain: "JS",
 			text: "Qu'est-ce qui est interprété en premier dans un code JavaScript ?",
 			answers:["L'affectation des variables'",
@@ -152,6 +151,27 @@ questions.push({id: 9,
 			         "La déclaration des variables et des fonctions"],
 			answerIs: "3"});
 
+// Ajout de tout le tableau de questions
+function addEverything() {
+
+  connect();
+
+  // model.create() prend en argument un tableau et fait un appel à save pour chaque item
+  Question.create(questions, function(err) {
+    if (err) {
+      return console.error(err);
+    }
+    disconnect();
+  });
+  
+}
+
+exports.addQuestion = addQuestion;
+exports.addEverything = addEverything;
+
+// EN-DESSOUS, ANCIEN CODE
+
+/*
 obtenirQuestionParId = function(id) {
 	return questions[id];
 };

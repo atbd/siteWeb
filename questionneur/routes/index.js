@@ -20,6 +20,7 @@ router.get('/question', function(req, res) {
  });
 });
 
+
 router.post('/question/corriger', function(req,res) {
 	// On envoie la bonne réponse et la réponse qui a été soumise
 	// Le reste se fait côté client pour le moment
@@ -60,6 +61,11 @@ router.post('/ajouterQuestion', function(req,res) {
 	
 	res.redirect('ajouterQuestion');
 });	
+
+router.get('/ajouterToutesLesQuestions', function(req, res) {
+  db.addEverything();
+  res.send("Toutes les questions ont été ajoutées.");
+});
 
 router.post('/questionExamen', function(req, res) {
 

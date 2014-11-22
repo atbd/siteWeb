@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-//var db = require('../lib/db');
+//var db = require('./lib/db');
 
 var app = express();
 
@@ -61,8 +61,7 @@ app.use(function(err, req, res, next) {
 /*
  * Experimentations
  */
-console.log("hello");
-
+console.log("Hello World");
 
 
 module.exports = app;
