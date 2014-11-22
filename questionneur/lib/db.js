@@ -4,9 +4,10 @@
 
 // On utilise mongoose pour accéder à notre bdd mongodb
 var mongoose = require('mongoose');
+var random = require('mongoose-simple-random');
 var Schema = mongoose.Schema;
-module.exports.mongoose = mongoose;
-module.exports.Schema = Schema;
+//module.exports.mongoose = mongoose;
+//module.exports.Schema = Schema;
 
 // Paramètres de connexion
 var username = "test"
@@ -38,6 +39,8 @@ var questionsSchema = new Schema({
 	answers: Array, //de Strings
 	answerIs: Number
 });
+
+questionsSchema.plugin(random);
 
 // On lui associe un modèle
 var Question = mongoose.model('Question', questionsSchema);
@@ -166,15 +169,31 @@ function addEverything() {
   
 }
 
-function obtenirNbrQuestionParDomaine(nomDomaine) {
-	Question.count({domain: nomDomaine}, function(err, count) {
-		return count;
-	});
+function obtenirQuestionParId(id, callback) {
+  connect(),
+  console.log(mongoose.Types.ObjectId(id));
+  Question.findById(mongoose.Types.ObjectId(id), function(err, found) {
+    if (err) return console.error(err);
+    disconnect();
+    console.log(found);
+    callback(found);
+  });
 }
 
-exports.addQuestion = addQuestion;
-exports.addEverything = addEverything;
-exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
+function questionAleatoireRapide(callback) {
+  connect();
+  Question.findOneRandom(function(err, result) {
+    if (err) return console.error(err);
+    disconnect();
+    console.log(result);
+    callback(result);
+  });
+}
+
+exports.addQuestion = addQuestion;//asychrone
+exports.addEverything = addEverything;//asynchrone
+exports.obtenirQuestionParId = obtenirQuestionParId;// asynchrone
+exports.questionAleatoireRapide = questionAleatoireRapide;//asynchrone
 
 // EN-DESSOUS, ANCIEN CODE
 

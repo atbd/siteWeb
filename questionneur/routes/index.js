@@ -12,12 +12,16 @@ router.get('/accueil', function(req, res) {
 });
 
 router.get('/question', function(req, res) {
-	var current = db.questionAleatoireRapide();
-	req.session.current = current;
+  var callback = function(questionAleatoire)
+  {
+    var current = questionAleatoire;
+	  req.session.current = current;
   	res.render('question', { 
-		url: req.originalUrl,
-		question: current
- });
+		  url: req.originalUrl,
+		  question: current
+    });
+  }
+  db.questionAleatoireRapide(callback);
 });
 
 
@@ -112,11 +116,13 @@ router.get('/questionExamen', function(req, res) {
 	if (index >= req.session.number)
 		res.redirect('examenTermine');
 	else {
-		req.session.current = db.obtenirQuestionParId(req.session.idQuestions[index]);
+	  db.obtenirQuestionParId(req.session.idQuestions[index], function(questionTrouvee) {
+	    req.session.current = questionTrouvee;
 	  	res.render('question', { 
-	  		url: req.originalUrl,
+	  	  url: req.originalUrl,
 	  		question: req.session.current
 	  	});
+	  );
 	}
 });
 

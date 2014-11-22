@@ -62,6 +62,6 @@ app.use(function(err, req, res, next) {
  * Experimentations
  */
 console.log("Hello World");
-
+//console.log(db.obtenirQuestionParId("54701d68adbb466710ff875d"));
 
 module.exports = app;
