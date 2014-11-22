@@ -17,7 +17,7 @@ label, input
 
 #reponses
 {
-	margin-left: 200px;
+	margin-left: 100px;
 }
 
 #reponses label
@@ -32,8 +32,8 @@ label, input
 
 #bonneR input
 {
-	width: auto;
-	font-size: 20pt;
+	width: 20px;
+	font-size: 16pt;
 	padding-bottom: 0px;
 	text-align: center;
 }
