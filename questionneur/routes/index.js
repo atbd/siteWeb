@@ -35,6 +35,22 @@ router.post('/question/corriger', function(req,res) {
 	);
 });
 
+router.post('/tableauBord/nbrQuestion', function(req,res) {
+	var tableauNbrQ = [];
+	var callback = function(nbrQuestionUnDomaine) {
+		tableauNbrQ.push(nbrQuestionUnDomaine);
+	}
+	db.obtenirNbrQuestionParDomaine('HTML', callback);
+	db.obtenirNbrQuestionParDomaine('CSS', callback);
+	db.obtenirNbrQuestionParDomaine('JS', callback);
+	res.send({
+		"nbrQuestionHTML": tableauNbrQ[0],
+		"nbrQuestionCSS": tableauNbrQ[1],
+		"nbrQuestionJS": tableauNbrQ[2]
+		}
+	);
+});
+
 // Page web pour ajouter des questions dans notre bdd Mongo
 router.get('/ajouterQuestion', function(req,res) {
 	res.render('ajouterQuestion');

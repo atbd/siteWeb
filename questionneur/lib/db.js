@@ -206,13 +206,16 @@ function initExam(categories, nbrQuestions, callback) {
   );
 }
 
-function obtenirNbrQuestionParDomaine(nomDomaine) {
-	Question.count({domain: nomDomaine}, function(err, count) {
-		return count;
+function obtenirNbrQuestionParDomaine(domaine, callback) {
+	connect();
+	Question.count({domain: domaine}, function(err, count) {
+		if (err) return console.error(err);
+		disconnect();
+		callback(count);
 	});
 }
 
-exports.obtenirQuestionParDomaine = obtenirNbrQuestionParDomaine;
+exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
 exports.addQuestion = addQuestion;
 exports.addEverything = addEverything;
 exports.obtenirQuestionParId = obtenirQuestionParId;
