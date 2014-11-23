@@ -71,6 +71,15 @@ if ($("input[name='CSS']").is(':checked')) {
 if ($("input[name='JS']").is(':checked')) {
 	nbrQuestionDispo += nbrJS;
 }
+if ($("input[name='HTML']").is(':not(:checked)')) {
+	nbrQuestionDispo -= nbrHTML;
+}
+if ($("input[name='CSS']").is(':not(:checked)')) {
+	nbrQuestionDispo -= nbrCSS;
+}
+if ($("input[name='JS']").is(':not(:checked)')) {
+	nbrQuestionDispo -= nbrJS;
+}
 if ($("input[type='checkbox']").is(':checked')) {
 	$("input[type='number']").attr('max', nbrQuestionDispo);
 }

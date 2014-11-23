@@ -40,14 +40,13 @@ router.post('/tableauBord/nbrQuestion', function(req,res) {
 	var callback = function(nbrQuestionUnDomaine) {
 		tableauNbrQ.push(nbrQuestionUnDomaine);
 	}
-	db.obtenirNbrQuestionParDomaine('HTML', callback);
-	db.obtenirNbrQuestionParDomaine('CSS', callback);
-	db.obtenirNbrQuestionParDomaine('JS', callback);
+	db.obtenirNbrQuestionParDomaine("HTML", callback);
+	db.obtenirNbrQuestionParDomaine("CSS", callback);
+	db.obtenirNbrQuestionParDomaine("JS", callback);
 	res.send({
 		"nbrQuestionHTML": tableauNbrQ[0],
 		"nbrQuestionCSS": tableauNbrQ[1],
-		"nbrQuestionJS": tableauNbrQ[2]
-		}
+		"nbrQuestionJS": tableauNbrQ[2]}
 	);
 });
 

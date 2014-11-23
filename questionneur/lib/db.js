@@ -210,9 +210,9 @@ function obtenirNbrQuestionParDomaine(domaine, callback) {
 	connect();
 	Question.count({domain: domaine}, function(err, count) {
 		if (err) return console.error(err);
-		disconnect();
 		callback(count);
 	});
+	disconnect();
 }
 
 exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
@@ -222,47 +222,4 @@ exports.obtenirQuestionParId = obtenirQuestionParId;
 exports.questionAleatoireRapide = questionAleatoireRapide;
 exports.initExam = initExam;
 
-// EN-DESSOUS, ANCIEN CODE
-
-/*
-obtenirQuestionParId = function(id) {
-	return questions[id];
-};
-
-questionAleatoireRapide = function() {
-	var myId = Math.floor(Math.random()*questions.length);
-	return obtenirQuestionParId(myId)
-};
-
-// renvoie le tableau d'id questions
-initExam = function(categories, nbrQuestions) {
-	var examQuestions = [];
-    
-    // On ajoute d'abord toutes les questions correspondant
-    // aux catégories demandées
-    for(var i = 0; (i < questions.length); i++) {
-        if (categories.indexOf(questions[i].domain) != -1) {
-            examQuestions.push(questions[i].id);
-        }
-    }
-    
-    // On enlève ensuite des questions aléatoirement
-    // pour avoir seulement nbrQuestions questions
-    while (examQuestions.length > nbrQuestions) {
-        examQuestions.splice(Math.floor(Math.random()*examQuestions.length),1);
-    }
-    
-    if (examQuestions.length < nbrQuestions) {
-        console.error("gestion_question.js: Pas assez de questions dispos dans la bdd!");
-        return;
-    }
-    
-    return examQuestions;
-}
-	
-// On exporte les fonctions qui nous interessent
-exports.obtenirQuestionParId = obtenirQuestionParId;
-exports.questionAleatoireRapide = questionAleatoireRapide;
-exports.initExam = initExam;
-*/
 
