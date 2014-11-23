@@ -33,7 +33,7 @@ function disconnect() {
 // Le schéma de notre bdd
 var questionsSchema = new Schema({
 	// id: c'est mongodb qui le crée
-	// FIXME: empêcher les questions en double, là c'est censer marcher mais ça ne marche pas...
+	// FIXME: empêcher les questions en double, là c'est censé marcher mais ça ne marche pas...
 	domain: String,
 	text: {type: String, unique: true, dropDups: true},
 	answers: Array, //de Strings
@@ -170,8 +170,7 @@ function addEverything() {
 }
 
 function obtenirQuestionParId(id, callback) {
-  connect(),
-  console.log(mongoose.Types.ObjectId(id));
+  connect();
   Question.findById(mongoose.Types.ObjectId(id), function(err, found) {
     if (err) return console.error(err);
     disconnect();
@@ -190,6 +189,23 @@ function questionAleatoireRapide(callback) {
   });
 }
 
+// renvoie les id des questions d'un examen
+function initExam(categories, nbrQuestions, callback) {
+  // mongoose-simple-random, c'est trop cool !
+  connect();
+  
+  var filter = { domain: { $in: categories } };
+  var fields = {_id: 1}; // on ne récupère que l'id
+  var options = { skip: nbrQuestions, limit: nbrQuestions };
+  Question.findRandom(filter, fields, options, function(err, results) {
+    if (err) return console.error(err);
+    disconnect();
+    console.log(results);
+    callback(results);
+    }
+  );
+}
+
 function obtenirNbrQuestionParDomaine(nomDomaine) {
 	Question.count({domain: nomDomaine}, function(err, count) {
 		return count;
@@ -197,10 +213,11 @@ function obtenirNbrQuestionParDomaine(nomDomaine) {
 }
 
 exports.obtenirQuestionParDomaine = obtenirNbrQuestionParDomaine;
-exports.addQuestion = addQuestion;//asychrone
-exports.addEverything = addEverything;//asynchrone
-exports.obtenirQuestionParId = obtenirQuestionParId;// asynchrone
-exports.questionAleatoireRapide = questionAleatoireRapide;//asynchrone
+exports.addQuestion = addQuestion;
+exports.addEverything = addEverything;
+exports.obtenirQuestionParId = obtenirQuestionParId;
+exports.questionAleatoireRapide = questionAleatoireRapide;
+exports.initExam = initExam;
 
 // EN-DESSOUS, ANCIEN CODE
 

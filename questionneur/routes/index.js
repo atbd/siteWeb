@@ -82,23 +82,25 @@ router.post('/questionExamen', function(req, res) {
 		domaines.push("JS");
 
 	// On récupère les id des questions de l'exam
-	var idQuestions = db.initExam(domaines, req.body.number);
+	db.initExam(domaines, req.body.number, function (idQuestions) {
 	
-	if (idQuestions === undefined)
-	{
-		// TODO: mieux gérer l'erreur
-		console.log("Pas assez de question dans la bdd");
-		res.redirect('tableauBord');
-	}
-	else
-	{
-		// Enregistrement dans session
-		req.session.domaines = domaines;
-		req.session.idQuestions = idQuestions;
-		req.session.number = req.body.number;
-		req.session.indexCurrent = -1;// index dans le tableau idQuestions
-		res.redirect('questionExamen');
-	}
+//	  if (idQuestions === undefined)
+//	  {
+//		  // TODO: mieux gérer l'erreur
+//		  console.log("Pas assez de question dans la bdd");
+//		  res.redirect('tableauBord');
+//	  }
+//	  else
+//	  {
+		  // Enregistrement dans session
+		  req.session.domaines = domaines;
+		  req.session.idQuestions = idQuestions;
+		  req.session.number = req.body.number;
+		  req.session.indexCurrent = -1;// index dans le tableau idQuestions
+		  res.redirect('questionExamen');
+//	  }
+	  
+	});
 });
 
 router.post('/questionExamen/corriger', function(req, res) {
@@ -115,7 +117,7 @@ router.get('/questionExamen', function(req, res) {
 	if (index >= req.session.number)
 		res.redirect('examenTermine');
 	else {
-	  db.obtenirQuestionParId(req.session.idQuestions[index], function(questionTrouvee) {
+	  db.obtenirQuestionParId(req.session.idQuestions[index]._id, function(questionTrouvee) {
 	    req.session.current = questionTrouvee;
 	  	res.render('question', { 
 	  	  url: req.originalUrl,
