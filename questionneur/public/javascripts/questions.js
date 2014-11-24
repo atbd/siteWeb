@@ -48,52 +48,38 @@ var nbrJS;
 var nbrQuestionDispo = 0;
 
 $(document).ready(function() {
-	var nbrQuestionDispo = 0;
 	var reponse = $.ajax({
 		type: 'POST',
 		url: 'tableauBord/nbrQuestion',
 		datatype: 'json',
-		success: function (data) {
-
-		nbrHTML = data.nbrQuestionHTML;
-		nbrCSS = data.nbrQuestionCSS;
-		nbrJS = data.nbrQuestionJS;
+		success: function (reponse) {
+		  nbrHTML = reponse.nbrQuestionHTML;
+		  nbrCSS = reponse.nbrQuestionCSS;
+		  nbrJS = reponse.nbrQuestionJS;
 		}
 	});
 });
 
-if ($("input[name='HTML']").is(':checked')) {
-	nbrQuestionDispo += nbrHTML;
-}
-if ($("input[name='CSS']").is(':checked')) {
-	nbrQuestionDispo += nbrCSS;
-}
-if ($("input[name='JS']").is(':checked')) {
-	nbrQuestionDispo += nbrJS;
-}
-if ($("input[name='HTML']").is(':not(:checked)')) {
-	nbrQuestionDispo -= nbrHTML;
-}
-if ($("input[name='CSS']").is(':not(:checked)')) {
-	nbrQuestionDispo -= nbrCSS;
-}
-if ($("input[name='JS']").is(':not(:checked)')) {
-	nbrQuestionDispo -= nbrJS;
-}
-if ($("input[type='checkbox']").is(':checked')) {
-	$("input[type='number']").attr('max', nbrQuestionDispo);
-}
+$(document).ready(function() {
 
-
-
-
-
-
-
-
-
-
-
-
-
+  $("input[type='checkbox']").change(function() {
+    nbrQuestionDispo = 0;
+    
+    if ( $('input[name="HTML"]').is(':checked') ) {
+	    nbrQuestionDispo += nbrHTML;
+    }
+    
+    if ($("input[name='CSS']").is(':checked')) {
+	    nbrQuestionDispo += nbrCSS;
+    }
+    
+    if ($("input[name='JS']").is(':checked')) {
+	    nbrQuestionDispo += nbrJS;
+    }
+    
+    $("input[type='number']").attr('max', nbrQuestionDispo);
+    
+  });
+  
+});
 

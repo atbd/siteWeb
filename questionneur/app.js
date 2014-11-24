@@ -8,7 +8,7 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 //var db = require('./lib/db');
-
+//var mongoose = require('mongoose');
 var app = express();
 
 // view engine setup
@@ -61,7 +61,35 @@ app.use(function(err, req, res, next) {
 /*
  * Experimentations
  */
-console.log("Hello World");
+
+//mongoose.connection.on('open', function (ref) {
+//  console.log('Connected to mongo server.');
+//  var tableauNbrQ = [];
+//	
+//	// Callback Hell
+//	// TODO: apprendre à utiliser correctement async et refactoriser tout ça !!!
+//	db.obtenirNbrQuestionParDomaine("HTML", function(err, compte) {
+//	  if (err) return console.error(err);
+//	  tableauNbrQ.push(compte);
+//	  db.obtenirNbrQuestionParDomaine("CSS", function(err, compte2) {
+//	    if (err) return console.error(err);
+//	    tableauNbrQ.push(compte2);
+//	    db.obtenirNbrQuestionParDomaine("JS", function(err, compte3) {
+//	      if (err) return console.error(err);
+//	      tableauNbrQ.push(compte3);
+//	      console.log(tableauNbrQ);
+//	    });
+//	  });
+//	});
+
+//});
+
+
+//db.connect();
+	
 //console.log(db.obtenirQuestionParId("54701d68adbb466710ff875d"));
+
+
+
 
 module.exports = app;

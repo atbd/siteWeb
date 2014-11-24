@@ -37,17 +37,33 @@ router.post('/question/corriger', function(req,res) {
 
 router.post('/tableauBord/nbrQuestion', function(req,res) {
 	var tableauNbrQ = [];
+	
 	var callback = function(nbrQuestionUnDomaine) {
 		tableauNbrQ.push(nbrQuestionUnDomaine);
 	}
-	db.obtenirNbrQuestionParDomaine("HTML", callback);
-	db.obtenirNbrQuestionParDomaine("CSS", callback);
-	db.obtenirNbrQuestionParDomaine("JS", callback);
-	res.send({
-		"nbrQuestionHTML": tableauNbrQ[0],
-		"nbrQuestionCSS": tableauNbrQ[1],
-		"nbrQuestionJS": tableauNbrQ[2]}
-	);
+	
+	// Callback Hell
+	// TODO: apprendre à utiliser correctement async et refactoriser tout ça !!!
+	db.connect();// ça devrait pas être là
+	db.obtenirNbrQuestionParDomaine("HTML", function(err, compte) {
+	  if (err) return console.error(err);
+	  tableauNbrQ.push(compte);
+	  db.obtenirNbrQuestionParDomaine("CSS", function(err, compte2) {
+	    if (err) return console.error(err);
+	    tableauNbrQ.push(compte2);
+	    db.obtenirNbrQuestionParDomaine("JS", function(err, compte3) {
+	      if (err) return console.error(err);
+	      tableauNbrQ.push(compte3);
+	      db.disconnect();
+	      res.send({
+		      "nbrQuestionHTML": tableauNbrQ[0],
+		      "nbrQuestionCSS": tableauNbrQ[1],
+		      "nbrQuestionJS": tableauNbrQ[2]
+	        }
+	      );
+	    });
+	  });
+	});
 });
 
 // Page web pour ajouter des questions dans notre bdd Mongo

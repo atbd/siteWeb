@@ -5,6 +5,7 @@
 // On utilise mongoose pour accéder à notre bdd mongodb
 var mongoose = require('mongoose');
 var random = require('mongoose-simple-random');
+//var async = require('async');
 var Schema = mongoose.Schema;
 //module.exports.mongoose = mongoose;
 //module.exports.Schema = Schema;
@@ -20,8 +21,8 @@ function connect() {
 	console.log("Connexion à " + adress);
 	mongoose.connect(url, function(err) {
     if (err) return console.error(err);
+    console.log("Connecté");
   });
-  console.log("Connecté à " + adress);
 }
 
 // Déconnexion
@@ -207,13 +208,32 @@ function initExam(categories, nbrQuestions, callback) {
 }
 
 function obtenirNbrQuestionParDomaine(domaine, callback) {
-	connect();
-	Question.count({domain: domaine}, function(err, count) {
-		if (err) return console.error(err);
-		callback(count);
-	});
-	disconnect();
+  
+  Question.count({domain: domaine}, function(err,compte) {
+    if (err) return console.error(err);
+    callback(err, compte);
+  });
+  
 }
+    
+
+// Ne marche pas, on ne sait pas pourquoi
+//	async.each(
+//	  domaines,
+//    function(unDomaine, majCompte) {
+//      console.log({domain: unDomaine});
+//      Question.count({domain: unDomaine}, function(err,compte) {
+//        majCompte(err, compte);
+//      });
+//    },
+//    function(err) {
+//      if (err) return console.error(err);
+//      console.log(reponse);
+//      callback(reponse);
+//      //disconnect();
+//    }
+//  );
+
 
 exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
 exports.addQuestion = addQuestion;
@@ -221,5 +241,6 @@ exports.addEverything = addEverything;
 exports.obtenirQuestionParId = obtenirQuestionParId;
 exports.questionAleatoireRapide = questionAleatoireRapide;
 exports.initExam = initExam;
-
+exports.connect = connect;
+exports.disconnect = disconnect;
 
