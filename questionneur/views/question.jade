@@ -16,10 +16,11 @@ block content
 		- var changement = {title:"Examen officiel", retour:"Abandon examen"}
 	h1#title
 		= changement.title
-	section#question
+	section#question(ng-controller="questionControleur")
 		fieldset
 			h2 
-				| Domaine #{question.domain}
+				| Domaine : 
+				span.domain #{question.domain}
 			p
 				i Question : #{question.text}
 			form(method='POST', action="#{url}/corriger")
