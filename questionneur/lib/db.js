@@ -11,9 +11,10 @@ var Schema = mongoose.Schema;
 //module.exports.Schema = Schema;
 
 // Paramètres de connexion
-var username = "test"
-var password = "test"
-var adress = '@ds053320.mongolab.com:53320/questions'
+var username = "test";
+var password = "test";
+var adress = '@ds053320.mongolab.com:53320/questions';
+var adressNotes = '@ds053320.mongolab.com:53320/notes';
 
 // Connexion
 function connect() {
@@ -22,6 +23,13 @@ function connect() {
 	mongoose.connect(url, function(err) {
     if (err) return console.error(err);
     console.log("Connecté");
+
+    var url2 = 'mongodb://' + username + ':' + password + adressNotes;
+	console.log("Connexion à " + adressNotes);
+	mongoose.connect(url2, function(err) {
+    	if (err) return console.error(err);
+    	console.log("Connecté");
+  });
   });
 }
 
@@ -39,6 +47,13 @@ var questionsSchema = new Schema({
 	text: {type: String, unique: true, dropDups: true},
 	answers: Array, //de Strings
 	answerIs: Number
+});
+
+// Schéma de la db notes
+var notesSchema = new Schema({
+	juste: String,
+	total: String,
+	categorie: String
 });
 
 questionsSchema.plugin(random);

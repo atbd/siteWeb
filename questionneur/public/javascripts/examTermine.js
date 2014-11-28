@@ -13,7 +13,7 @@ $(document).ready(function () {
 	var tableauExam = [];
 	
 	// on fait une requete pour recuperer les domaines
-	// (et le nombre de questions => non) de l'examen auquel on a repondu
+	// (et le nombre de questions) de l'examen auquel on a repondu
 	// note : pas du tout optimisé
 	var reponse = $.ajax({
 				type: 'POST',
@@ -22,8 +22,8 @@ $(document).ready(function () {
 				success: function (data) {
 					
 					cat = data.domaines;
-					//nbr = data.nbrQuestions;
-					tmp = [justeExamCourant, totalExamCourant, cat];
+					nbr = data.nbrQuestions; // nbr questions de l'examen courant
+					tmp = [justeExamCourant, nbr, cat];
 
 					if (localStorage.getItem("tableauExam")!=null) {
 		

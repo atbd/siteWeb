@@ -28,16 +28,6 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false // on empeche le navigateur de renvoyer le formulaire
 	});
-	
-	if (window.location.pathname == '/question') {
-		var justeString = "justeRapideCourant";
-		var totalString = "totalRapideCourant";
-	} else {
-		var justeString = "justeExamCourant";
-		var totalString = "totalExamCourant";
-	}
-	
-	majNote(justeString, totalString);
 });
 
 /*
@@ -45,38 +35,18 @@ $(document).ready(function() {
  * Corrige la question (fond vert/rouge)
  * appel de fonctions pour les stats et se tenir pret à passer à la question suivante
  */
-function correctAnswers(data) {
+function correctAnswers(data) {	// fera juste la coloration au final
 
 	// On ajoute la classe true (css->fond vert) à la vraie réponse
 	$("label[for=" + data.answerIs + "]").addClass('true');
 	
-	if (window.location.pathname == '/question') {
-		var justeString = "justeRapideCourant";
-		var totalString = "totalRapideCourant";
-	} else {
-		var justeString = "justeExamCourant";
-		var totalString = "totalExamCourant";
-	}
-	
-	
-	var justeCourant = parseInt(localStorage.getItem(justeString));
-	var totalCourant = parseInt(localStorage.getItem(totalString));
-	
 	// On ajoute la classe false (css->fond rouge) à la réponse fausse
 	if (data.answerSent != data.answerIs) {
 		$("label[for=" + data.answerSent + "]").addClass('false');
-	} else {
-		// si la réponse est juste
-		justeCourant +=1;
-		localStorage.setItem(justeString, justeCourant.toString());
-	}
-	
-	totalCourant +=1;
-	
-	localStorage.setItem(totalString, totalCourant.toString());
+	} 
 	
     changeButton();
-    majNote(justeString, totalString);
+    $('#noteCourante').text(data.repJusteCourante + "/" + data.repTotalCourante);
 }
 
 function changeButton() {

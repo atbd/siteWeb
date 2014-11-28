@@ -26,13 +26,29 @@ router.get('/question', function(req, res) {
 
 
 router.post('/question/corriger', function(req,res) {
-	// On envoie la bonne réponse et la réponse qui a été soumise
-	// Le reste se fait côté client pour le moment
-	// TODO: Il faudrait tester si la réponse envoyée n'est pas vide (pour éviter la triche)
-	res.send({
-		"answerSent": req.body.reponse,
-		"answerIs": req.session.current.answerIs}
-	);
+	var answerSent = req.body.reponse;
+	var answerIs = req.session.current.answerIs;
+
+	if (req.session.repJusteCourante == '' || req.session.repJusteCourante == undefined) {
+		req.session.repJusteCourante = 0;
+	}
+
+	if (req.session.repTotalCourante == '' || req.session.repTotalCourante == undefined) {
+		req.session.repTotalCourante = 0;
+	}
+
+	if (answerSent == answerIs) {
+		req.session.repJusteCourante += 1;
+	}
+
+	req.session.repTotalCourante += 1;
+
+	res.send({ // vérifier que ça renvoie bien des strings
+		"answerSent": answerSent,
+		"answerIs": answerIs,
+		"repJusteCourante": req.session.repJusteCourante,
+		"repTotalCourante": req.session.repTotalCourante
+	});
 });
 
 router.post('/tableauBord/nbrQuestion', function(req,res) {
