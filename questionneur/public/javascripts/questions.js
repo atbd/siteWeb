@@ -2,6 +2,7 @@
 // dans le tableau de bord
 
 $(document).ready(function () {
+	// pas sur que cette partie soit encore utile
 	var nbrQ; 
 	var categorie = [];
 
@@ -56,6 +57,15 @@ $(document).ready(function() {
 		  nbrHTML = reponse.nbrQuestionHTML;
 		  nbrCSS = reponse.nbrQuestionCSS;
 		  nbrJS = reponse.nbrQuestionJS;
+		}
+	});
+
+	var reponseStat = $.ajax({
+		type: 'POST',
+		url: 'tableauBord/stats',
+		datatype: 'json',
+		success: function (data) {
+		  $('#cumulRapide').text(data.repJusteGlobale + "/" + data.repTotalGlobale);
 		}
 	});
 });

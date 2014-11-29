@@ -26,7 +26,7 @@ $(document).ready(function() {
 			});
 		}
 		e.preventDefault();
-		return false // on empeche le navigateur de renvoyer le formulaire
+		return false; // on empeche le navigateur de renvoyer le formulaire
 	});
 });
 
@@ -62,23 +62,4 @@ function changeButton() {
      	window.location.href = window.location.pathname;
      });
 }
-
-function majNote(justeString, totalString) {
-    repJuste = localStorage.getItem(justeString);
-    repTotal = localStorage.getItem(totalString);
-
-    $('#noteCourante').text(repJuste + "/" + repTotal);
-}
-
-
-
-
-
-
-
-
-
-
-
-
 

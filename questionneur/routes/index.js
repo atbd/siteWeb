@@ -29,13 +29,13 @@ router.post('/question/corriger', function(req,res) {
 	var answerSent = req.body.reponse;
 	var answerIs = req.session.current.answerIs;
 
-	if (req.session.repJusteCourante == '' || req.session.repJusteCourante == undefined) {
+/*	if (req.session.repJusteCourante == '' || req.session.repJusteCourante == undefined) {
 		req.session.repJusteCourante = 0;
 	}
 
 	if (req.session.repTotalCourante == '' || req.session.repTotalCourante == undefined) {
 		req.session.repTotalCourante = 0;
-	}
+	}	*/
 
 	if (answerSent == answerIs) {
 		req.session.repJusteCourante += 1;
@@ -178,9 +178,16 @@ router.post('/examenTermine', function(req,res) {
 	// On envoie des infos sur l'exam
 	res.send({
 		"domaines": req.session.domaines,
-		"nbrQuestions": req.session.nbrQuestions
+		"nbrQuestions": req.session.nbrQuestions,
+		"repJusteCourante": req.session.repJusteCourante
 		}
 	);
+
+	req.session.repJusteGlobaleExam += repJusteCourante;
+	req.session.repTotalGlobaleExam += repTotalCourante;
+
+	req.session.repJusteCourante = 0;
+	req.session.repTotalCourante = 0;
 });
 
 router.get('/examenTermine', function(req, res) {
@@ -188,7 +195,44 @@ router.get('/examenTermine', function(req, res) {
 });
 
 router.get('/tableauBord', function(req, res) {
-  res.render('tableauBord');
+	// calcul des notes globales test rapide et examen (voir si vaut mieux pas mettre un ajax lorsqu'on clique sur retour menu pour test rapide et à la fin de l'exam une fois termine)
+	if (req.session.repJusteGlobale == '' || req.session.repJusteGlobale == undefined) {
+		req.session.repJusteGlobale = 0;
+	}
+
+	if (req.session.repTotalGlobale == '' || req.session.repTotalGlobale == undefined) {
+		req.session.repTotalGlobale = 0;
+	}
+
+	if (req.session.repJusteCourante == '' || req.session.repJusteCourante == undefined) {
+		req.session.repJusteCourante = 0;
+	}
+
+	if (req.session.repTotalCourante == '' || req.session.repTotalCourante == undefined) {
+		req.session.repTotalCourante = 0;
+	}
+
+	if (req.session.repJusteGlobaleExam == '' || req.session.repJusteGlobaleExam == undefined) {
+		req.session.repJusteGlobaleExam = 0;
+	}
+
+	if (req.session.repTotalGlobaleExam == '' || req.session.repTotalGlobaleExam == undefined) {
+		req.session.repTotalGlobaleExam = 0;
+	}
+
+	req.session.repJusteGlobale += req.session.repJusteCourante;
+	req.session.repTotalGlobale += req.session.repTotalCourante;
+
+	req.session.repTotalCourante = 0;
+	req.session.repJusteCourante = 0;
+	res.render('tableauBord');
+});
+
+router.post('/tableauBord/stats', function (req, res) {
+	res.send({ // TODO: voir si pour ajouter truc de l'exam ou non
+		"repJusteGlobale": req.session.repJusteGlobale,
+		"repTotalGlobale": req.session.repTotalGlobale
+	});
 });
 
 router.get('/instructions', function(req, res) {

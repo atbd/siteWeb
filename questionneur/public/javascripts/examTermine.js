@@ -4,11 +4,12 @@ $(document).ready(function () {
 
 	var tmp = [];
 
-	var justeExamCourant = localStorage.getItem("justeExamCourant");
-	var totalExamCourant = localStorage.getItem("totalExamCourant");
+	//var justeExamCourant = localStorage.getItem("justeExamCourant");
+	//var totalExamCourant = localStorage.getItem("totalExamCourant");
 	
 	var cat;
 	var nbr;
+	var justeExamCourant;
 	var tmp = [];
 	var tableauExam = [];
 	
@@ -23,13 +24,16 @@ $(document).ready(function () {
 					
 					cat = data.domaines;
 					nbr = data.nbrQuestions; // nbr questions de l'examen courant
+					justeExamCourant = data.repJusteCourante;
 					tmp = [justeExamCourant, nbr, cat];
 
-					if (localStorage.getItem("tableauExam")!=null) {
+					/*if (localStorage.getItem("tableauExam")!=null) {
 		
 						tableauExam = localStorage.getItem("tableauExam");
 						tableauExam = JSON.parse(tableauExam);
-					}
+					}*/
+
+					// faire ce qui est au-dessus avec database notes
 	
 					tableauExam.push(tmp);
 
