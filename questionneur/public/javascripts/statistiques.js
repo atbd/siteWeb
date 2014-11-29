@@ -4,16 +4,25 @@
  * Calcul et affichage des statistiques
  *
  */
-
 $(document).ready(function() {
-	afficherStats();
+	//afficherStats();
+	
+	var reponseStat = $.ajax({
+		type: 'POST',
+		url: 'tableauBord/stats',
+		datatype: 'json',
+		success: function (data) {
+		  $('#cumulRapide').text(data.repJusteGlobale + "/" + data.repTotalGlobale);
+		  $('#cumulExam').text(data.pourcentage + "% correct");
+		}
+	});
 });
 
 function afficherStats() {
 
     // Affichage des résultats des tests rapides
 	
-    if (localStorage.getItem("totalRapide")==null) {
+ /*   if (localStorage.getItem("totalRapide")==null) {
 	    $('#cumulRapide').text("Pas encore de test effectué.");
 	
 	    } else {
@@ -35,7 +44,7 @@ function afficherStats() {
         localStorage.setItem("justeRapide", justeRapide.toString());
 
 	    $('#cumulRapide').text(justeRapide + "/" + totalRapide);
-    }
+    }	*/
 
 	// Pour l'affichage des résultats d'examens
 	
@@ -75,10 +84,10 @@ function afficherStats() {
 /*
  * Pour le bouton de remise à zero
  */
-function raz() {
+function raz() { // TODO : pour l'instant en onclick... voir cmt faire pour la nouvelle dans db.js
 	localStorage.clear();
 	window.location.reload();
-}
+} 
 
 /*
  * Permet la mise à jour du popup

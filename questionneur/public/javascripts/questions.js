@@ -40,8 +40,7 @@ $(document).ready(function() {
 
 
 /*
-* Récupération du nombre de questions par domaine dans la BD (ne marche pas encore)
-* TODO: faire toutes l'arithmétique lorsque bouton coché ou non
+* Récupération du nombre de questions par domaine dans la BD
 */
 var nbrHTML;
 var nbrCSS;
@@ -57,15 +56,6 @@ $(document).ready(function() {
 		  nbrHTML = reponse.nbrQuestionHTML;
 		  nbrCSS = reponse.nbrQuestionCSS;
 		  nbrJS = reponse.nbrQuestionJS;
-		}
-	});
-
-	var reponseStat = $.ajax({
-		type: 'POST',
-		url: 'tableauBord/stats',
-		datatype: 'json',
-		success: function (data) {
-		  $('#cumulRapide').text(data.repJusteGlobale + "/" + data.repTotalGlobale);
 		}
 	});
 });

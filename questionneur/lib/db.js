@@ -39,6 +39,47 @@ function disconnect() {
 	console.log("Déconnecté");
 }
 
+// Gestion des notes dans la bdd
+
+// Schéma de la db notes
+var notesSchema = new Schema({
+	juste: String,
+	total: String,
+	categorie: String
+});
+
+var notes = mongoose.model('notes', notesSchema);
+
+function ajoutUnExam(content) {
+	// pour ajouter les données d'un exam dans la bdd
+	connect(); // TODO : changer tous les connect/deco pour le faire qu'une fois
+  	console.log("Ajout dans la bdd notes");
+  	console.log("+ juste : " + content.juste);
+  	console.log("+ total : " + content.total);
+  	console.log("+ categorie : " + content.categorie);
+  
+	var q = new notes({
+		juste: content.juste,
+		total: content.total,
+		categorie: content.categorie
+	});
+
+	q.save(function (err) {
+		if (err) return console.error(err);
+		disconnect(); // à changer
+	});
+}
+
+function remiseAZero() {
+	// pour le bouton de raz dans tableauBord
+	notes.remove({}, function(err) { 
+   		console.log('collection removed') 
+	});
+}
+
+
+// En dessous pour questions
+
 // Le schéma de notre bdd
 var questionsSchema = new Schema({
 	// id: c'est mongodb qui le crée
@@ -49,13 +90,6 @@ var questionsSchema = new Schema({
 	answerIs: Number
 });
 
-// Schéma de la db notes
-var notesSchema = new Schema({
-	juste: String,
-	total: String,
-	categorie: String
-});
-
 questionsSchema.plugin(random);
 
 // On lui associe un modèle
@@ -63,7 +97,6 @@ var Question = mongoose.model('Question', questionsSchema);
 
 // Ajout d'une question
 function addQuestion(content) {
-  
   connect();
   console.log("Ajout dans la bdd");
   console.log("+ Domaine : " + content.domain);
@@ -82,7 +115,6 @@ function addQuestion(content) {
 		if (err) return console.error(err);
 		disconnect();
 	});
-	
 }  
 
 // Notre ancien tableau de questions à insérer

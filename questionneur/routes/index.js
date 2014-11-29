@@ -183,11 +183,13 @@ router.post('/examenTermine', function(req,res) {
 		}
 	);
 
+	// TODO : prendre en compte l'abandon d'exam, je sais pas encore comment
 	req.session.repJusteGlobaleExam += repJusteCourante;
 	req.session.repTotalGlobaleExam += repTotalCourante;
 
 	req.session.repJusteCourante = 0;
 	req.session.repTotalCourante = 0;
+	// devrait marcher mais pour l'instant les questions d'exam sont aussi comptés dans la note globale des tests rapides
 });
 
 router.get('/examenTermine', function(req, res) {
@@ -229,9 +231,17 @@ router.get('/tableauBord', function(req, res) {
 });
 
 router.post('/tableauBord/stats', function (req, res) {
-	res.send({ // TODO: voir si pour ajouter truc de l'exam ou non
+	// TODO: prendre en compte abandon exam
+	if (req.session.repTotalGlobaleExam != 0) {
+		var pourcentage = ((req.session.repJusteGlobaleExam/req.session.repTotalGlobaleExam)*100).toString();
+	} else {
+		var pourcentage = ":) "; 
+	}
+
+	res.send({ 
 		"repJusteGlobale": req.session.repJusteGlobale,
-		"repTotalGlobale": req.session.repTotalGlobale
+		"repTotalGlobale": req.session.repTotalGlobale,
+		"pourcentage": pourcentage
 	});
 });
 
