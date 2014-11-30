@@ -29,14 +29,6 @@ router.post('/question/corriger', function(req,res) {
 	var answerSent = req.body.reponse;
 	var answerIs = req.session.current.answerIs;
 
-/*	if (req.session.repJusteCourante == '' || req.session.repJusteCourante == undefined) {
-		req.session.repJusteCourante = 0;
-	}
-
-	if (req.session.repTotalCourante == '' || req.session.repTotalCourante == undefined) {
-		req.session.repTotalCourante = 0;
-	}	*/
-
 	if (answerSent == answerIs) {
 		req.session.repJusteCourante += 1;
 	}
@@ -175,21 +167,31 @@ router.get('/questionExamen', function(req, res) {
 });
 
 router.post('/examenTermine', function(req,res) {
-	// On envoie des infos sur l'exam
-	res.send({
-		"domaines": req.session.domaines,
-		"nbrQuestions": req.session.nbrQuestions,
-		"repJusteCourante": req.session.repJusteCourante
-		}
-	);
-
-	// TODO : prendre en compte l'abandon d'exam, je sais pas encore comment
-	req.session.repJusteGlobaleExam += repJusteCourante;
-	req.session.repTotalGlobaleExam += repTotalCourante;
+	var repJuste = req.session.repJusteCourante;
+	var nbr = req.session.repTotalCourante;
 
 	req.session.repJusteCourante = 0;
 	req.session.repTotalCourante = 0;
-	// devrait marcher mais pour l'instant les questions d'exam sont aussi comptés dans la note globale des tests rapides
+
+	// TODO : prendre en compte l'abandon d'exam, je sais pas encore comment
+	req.session.repJusteGlobaleExam += repJuste;
+	req.session.repTotalGlobaleExam += nbr;
+
+	// TODO: la connexion à la db bug pour le moment... Régler ça avant de décommenter le bloc en dessous sinon erreur 500
+
+	/*var content = {
+		"juste": repJuste.toString(),
+		"total": nbr.toString(),
+		"categorie": req.session.domaines
+	}; 
+	db.ajoutUnExam(content);	*/
+
+	// On envoie des infos sur l'exam
+	res.send({
+		"repTotalCourante": nbr,
+		"repJusteCourante": repJuste
+		}
+	);
 });
 
 router.get('/examenTermine', function(req, res) {
