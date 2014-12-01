@@ -53,11 +53,6 @@ var notes = mongoose.model('notes', notesSchema);
 
 function ajoutUnExam(content) {
 	// pour ajouter les données d'un exam dans la bdd
-	connect(); // TODO : changer tous les connect/deco pour le faire qu'une fois
-  	console.log("Ajout dans la bdd notes");
-  	console.log("+ juste : " + content.juste);
-  	console.log("+ total : " + content.total);
-  	console.log("+ categorie : " + content.categorie);
   
 	var q = new notes({
 		juste: content.juste,
@@ -67,12 +62,12 @@ function ajoutUnExam(content) {
 
 	q.save(function (err) {
 		if (err) return console.error(err);
-		disconnect(); // à changer
 	});
 }
 
 function remiseAZero() {
 	// pour le bouton de raz dans tableauBord
+	// TODO: à changer pour virer que les notes
 	notes.remove({}, function(err) { 
    		console.log('collection removed') 
 	});
@@ -99,7 +94,7 @@ var Question = mongoose.model('Question', questionsSchema);
 
 // Ajout d'une question
 function addQuestion(content) {
-  connect();
+  //connect();
   console.log("Ajout dans la bdd");
   console.log("+ Domaine : " + content.domain);
   console.log("+ Question : " + content.text);
@@ -115,7 +110,7 @@ function addQuestion(content) {
 
 	q.save(function (err) {
 		if (err) return console.error(err);
-		disconnect();
+		//disconnect();
 	});
 }  
 
@@ -207,33 +202,33 @@ questions.push({
 // Ajout de tout le tableau de questions
 function addEverything() {
 
-  connect();
+  //connect();
 
   // model.create() prend en argument un tableau et fait un appel à save pour chaque item
   Question.create(questions, function(err) {
     if (err) {
       return console.error(err);
     }
-    disconnect();
+    //disconnect();
   });
   
 }
 
 function obtenirQuestionParId(id, callback) {
-  connect();
+  //connect();
   Question.findById(mongoose.Types.ObjectId(id), function(err, found) {
     if (err) return console.error(err);
-    disconnect();
+    //disconnect();
     console.log(found);
     callback(found);
   });
 }
 
 function questionAleatoireRapide(callback) {
-  connect();
+  //connect();
   Question.findOneRandom(function(err, result) {
     if (err) return console.error(err);
-    disconnect();
+    //disconnect();
     console.log(result);
     callback(result);
   });
@@ -242,14 +237,14 @@ function questionAleatoireRapide(callback) {
 // renvoie les id des questions d'un examen
 function initExam(categories, nbrQuestions, callback) {
   // mongoose-simple-random, c'est trop cool !
-  connect();
+  //connect();
   
   var filter = { domain: { $in: categories } };
   var fields = {_id: 1}; // on ne récupère que l'id
   var options = { skip: nbrQuestions, limit: nbrQuestions };
   Question.findRandom(filter, fields, options, function(err, results) {
     if (err) return console.error(err);
-    disconnect();
+    //disconnect();
     console.log(results);
     callback(results);
     }
@@ -283,7 +278,8 @@ function obtenirNbrQuestionParDomaine(domaine, callback) {
 //    }
 //  );
 
-
+exports.remiseAZero = remiseAZero;
+exports.ajoutUnExam = ajoutUnExam;
 exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
 exports.addQuestion = addQuestion;
 exports.addEverything = addEverything;

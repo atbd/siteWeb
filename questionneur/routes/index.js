@@ -52,7 +52,7 @@ router.post('/tableauBord/nbrQuestion', function(req,res) {
 	
 	// Callback Hell
 	// TODO: apprendre à utiliser correctement async et refactoriser tout ça !!!
-	db.connect();// ça devrait pas être là
+	//db.connect();// ça devrait pas être là
 	db.obtenirNbrQuestionParDomaine("HTML", function(err, compte) {
 	  if (err) return console.error(err);
 	  tableauNbrQ.push(compte);
@@ -62,7 +62,7 @@ router.post('/tableauBord/nbrQuestion', function(req,res) {
 	    db.obtenirNbrQuestionParDomaine("JS", function(err, compte3) {
 	      if (err) return console.error(err);
 	      tableauNbrQ.push(compte3);
-	      db.disconnect();
+	      //db.disconnect();
 	      res.send({
 		      "nbrQuestionHTML": tableauNbrQ[0],
 		      "nbrQuestionCSS": tableauNbrQ[1],
@@ -177,14 +177,20 @@ router.post('/examenTermine', function(req,res) {
 	req.session.repJusteGlobaleExam += repJuste;
 	req.session.repTotalGlobaleExam += nbr;
 
-	// TODO: la connexion à la db bug pour le moment... Régler ça avant de décommenter le bloc en dessous sinon erreur 500. Peut être problème avec la fct ajoutExam
+	// TODO: la connexion à la db bug pour le moment... Régler ça avant de décommenter db.ajoutExam sinon erreur 500. Peut être problème avec la fct ajoutExam
 
-	/*var content = {
+	var content = {
 		"juste": repJuste.toString(),
 		"total": nbr.toString(),
 		"categorie": req.session.domaines
 	}; 
-	db.ajoutUnExam(content);	*/
+	db.ajoutUnExam(content);
+	console.log("%%%%%%%%%%%%%%%%%%%%%%%%%");
+	console.log("sauvegarde des notes");	
+	console.log("total " + content.total);
+	console.log("juste " + content.juste);
+	console.log("categorie " + content.categorie);
+	console.log("%%%%%%%%%%%%%%%%%%%%%%%%%");
 
 	// On envoie des infos sur l'exam
 	res.send({
@@ -229,6 +235,9 @@ router.get('/tableauBord', function(req, res) {
 
 	req.session.repTotalCourante = 0;
 	req.session.repJusteCourante = 0;
+
+	db.connect();
+
 	res.render('tableauBord');
 });
 
