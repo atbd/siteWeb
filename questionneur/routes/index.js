@@ -177,7 +177,7 @@ router.post('/examenTermine', function(req,res) {
 	req.session.repJusteGlobaleExam += repJuste;
 	req.session.repTotalGlobaleExam += nbr;
 
-	// TODO: la connexion à la db bug pour le moment... Régler ça avant de décommenter le bloc en dessous sinon erreur 500
+	// TODO: la connexion à la db bug pour le moment... Régler ça avant de décommenter le bloc en dessous sinon erreur 500. Peut être problème avec la fct ajoutExam
 
 	/*var content = {
 		"juste": repJuste.toString(),

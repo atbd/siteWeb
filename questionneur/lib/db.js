@@ -20,7 +20,7 @@ var adress = '@ds053320.mongolab.com:53320/questions';
 function connect() {
 	var url = 'mongodb://' + username + ':' + password + adress;
 	console.log("Connexion à " + adress);
-	mongoose.createConnection(url, function(err) {
+	mongoose.connect(url, function(err) {
     if (err) return console.error(err);
     console.log("Connecté");
   });
