@@ -66,9 +66,10 @@ function ajoutUnExam(content) {
 }
 
 // lorsque un exam est abandonné
-function abandonExam() {
+function abandonExam(content, callback) {
 	// lorsque click sur abandon faire une requête ajax qui appellera cette fonction pour mettre les notes courantes à 0 et pour mettre 0 et X dans la db. Adapter aussi les calculs pour pas prendre en compte ça dans le pourcentage
-	// on utilisera plutôt ajoutUnExam() en fait
+	ajoutUnExam(content);
+	callback();
 }
 
 function remiseAZero() {
@@ -293,6 +294,7 @@ function obtenirNbrQuestionParDomaine(domaine, callback) {
 //    }
 //  );
 
+exports.abandonExam = abandonExam;
 exports.popupStats = popupStats;
 exports.remiseAZero = remiseAZero;
 exports.ajoutUnExam = ajoutUnExam;

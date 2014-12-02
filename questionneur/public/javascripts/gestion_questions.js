@@ -32,7 +32,7 @@ $(document).ready(function() {
 	// pour notifier de l'abandon d'exam
 	$('#retour').click(function() {
 		var reponseAbandon = $.ajax({
-				type: 'POST',
+				type: 'GET',
 				url: 'question/abandon'
 			});
 	});
