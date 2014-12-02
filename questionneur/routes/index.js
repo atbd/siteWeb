@@ -35,7 +35,7 @@ router.post('/question/corriger', function(req,res) {
 
 	req.session.repTotalCourante += 1;
 
-	res.send({ // vérifier que ça renvoie bien des strings
+	res.send({ 
 		"answerSent": answerSent,
 		"answerIs": answerIs,
 		"repJusteCourante": req.session.repJusteCourante,
@@ -166,6 +166,20 @@ router.get('/questionExamen', function(req, res) {
 	}
 });
 
+router.post('/tableauBord/popup', function(req, res) {
+	// envoi le tableau des anciens exam
+	var callback = function(array) {
+	//	console.log(array[1]);
+		res.send(array);
+	}
+	db.popupStats(callback);
+	console.log("coucou d'index.js");
+});
+
+router.post('/tableauBord/raz', function(req, res) {
+	db.remiseAZero();
+});
+
 router.post('/examenTermine', function(req,res) {
 	var repJuste = req.session.repJusteCourante;
 	var nbr = req.session.repTotalCourante;
@@ -176,8 +190,6 @@ router.post('/examenTermine', function(req,res) {
 	// TODO : prendre en compte l'abandon d'exam, je sais pas encore comment
 	req.session.repJusteGlobaleExam += repJuste;
 	req.session.repTotalGlobaleExam += nbr;
-
-	// TODO: la connexion à la db bug pour le moment... Régler ça avant de décommenter db.ajoutExam sinon erreur 500. Peut être problème avec la fct ajoutExam
 
 	var content = {
 		"juste": repJuste.toString(),

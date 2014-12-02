@@ -65,11 +65,25 @@ function ajoutUnExam(content) {
 	});
 }
 
+// lorsque un exam est abandonné
+function abandonExam() {
+	// lorsque click sur abandon faire une requête ajax qui appellera cette fonction pour mettre les notes courantes à 0 et pour mettre 0 et X dans la db. Adapter aussi les calculs pour pas prendre en compte ça dans le pourcentage
+}
+
 function remiseAZero() {
 	// pour le bouton de raz dans tableauBord
 	// TODO: à changer pour virer que les notes
-	notes.remove({}, function(err) { 
+	notes.remove(null, function(err) { 
    		console.log('collection removed') 
+	});
+}
+
+function popupStats(callback) {
+	notes.find(null, function (err, comms) {
+	  if (err) { throw err; }
+	  // comms est un tableau de hash
+	  //console.log(comms);
+	  callback(comms);
 	});
 }
 
@@ -278,6 +292,7 @@ function obtenirNbrQuestionParDomaine(domaine, callback) {
 //    }
 //  );
 
+exports.popupStats = popupStats;
 exports.remiseAZero = remiseAZero;
 exports.ajoutUnExam = ajoutUnExam;
 exports.obtenirNbrQuestionParDomaine = obtenirNbrQuestionParDomaine;
