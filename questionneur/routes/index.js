@@ -180,6 +180,25 @@ router.post('/tableauBord/raz', function(req, res) {
 	db.remiseAZero();
 });
 
+router.post('/question/abandon', function(req,res) {
+	// lorsque le "joueur" abandonne
+	// TODO: à cause de l'asynchronisme le cumul se fait encore sur les questions rapide... Les lignes d'en dessous ne sont pas fait avant de se rendre sur tableauBord apparemment
+	req.session.repJusteCourante = 0;
+	req.session.repTotalCourante = 0;
+
+	var content = {
+		"juste": "0",
+		"total": "X",
+		"categorie": req.session.domaines
+	};
+
+	db.ajoutUnExam(content);
+	console.log("Abandon d'un exam !!");
+
+	// TODO: render et redirect ne fonctionne pas, je ne sais pas encore pk
+	//res.render('/tableauBord');
+});
+
 router.post('/examenTermine', function(req,res) {
 	var repJuste = req.session.repJusteCourante;
 	var nbr = req.session.repTotalCourante;

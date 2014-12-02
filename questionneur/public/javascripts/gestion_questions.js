@@ -28,6 +28,15 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false; // on empeche le navigateur de renvoyer le formulaire
 	});
+
+	// pour notifier de l'abandon d'exam
+	$('#retour').click(function() {
+		var reponseAbandon = $.ajax({
+				type: 'POST',
+				url: 'question/abandon'
+			});
+	});
+
 });
 
 /*
