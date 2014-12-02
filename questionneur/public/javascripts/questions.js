@@ -24,7 +24,7 @@ $(document).ready(function () {
 			});
 		}
 	}));
-});
+});	
 
 /*
  * Vérifie qu'une catégorie est bien choisie

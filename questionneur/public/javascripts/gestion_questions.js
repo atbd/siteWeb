@@ -30,12 +30,14 @@ $(document).ready(function() {
 	});
 
 	// pour notifier de l'abandon d'exam
-	$('#retour').click(function() {
-		var reponseAbandon = $.ajax({
-				type: 'GET',
-				url: 'question/abandon'
-			});
-	});
+	if (window.location.pathname == '/questionExamen') {
+		$('#retour').click(function() {
+			var reponseAbandon = $.ajax({
+					type: 'GET',
+					url: 'question/abandon'
+				});
+		});
+	}
 
 });
 

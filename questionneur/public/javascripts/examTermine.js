@@ -10,7 +10,7 @@ $(document).ready(function () {
 				datatype: 'json',
 				success: function (data) {
 					
-					nbr = data.repTotalCourante; // nbr questions de l'examen courant
+					nbr = data.repTotalCourante; 
 					justeExamCourant = data.repJusteCourante;
 	
 					// affichage
