@@ -5,6 +5,23 @@
  */
 
 /*
+ * Module angularjs
+ */
+var Quiz = angular.module('Quiz', []);
+
+Quiz.controller('QuestionController', function($scope, $http, QuestionModel) { 
+	//(votre code contrôleur qui gère la page) 
+    //(les données à insérer dans le HTML vont être obtenues par QuestionModel) 
+}); 
+
+Quiz.service('QuestionModel', function(){ 
+	//(votre code qui correspond au modèle de votre page). 
+    //(modèle = question, réponse à une question et  
+    //statistique courante) 
+});
+
+
+/*
  * Vérifie qu'une réponse est bien choisie
  * et si c'est le cas effectue une requete ajax pour récupérer la réponse
  */

@@ -6,17 +6,18 @@ block deco
 	link(rel='stylesheet', href='/stylesheets/question.css')
 	
 block js
+	script(type='text/javascript', charset='UTF-8', src='/javascripts/angular.min.js')
 	script(type='text/javascript', charset='UTF-8', src='/javascripts/gestion_questions.js')
 	
 block content
-	section#principale
+	section#principale(ng-app='Quiz')
 	if (url == '/question')
 		- var changement = {title:"Test rapide", retour:"Retour menu"}
 	else
 		- var changement = {title:"Examen officiel", retour:"Abandon examen"}
 	h1#title
 		= changement.title
-	section#question(ng-controller="questionControleur")
+	section#question(ng-controller="QuestionController")
 		fieldset
 			h2 
 				| Domaine : 
