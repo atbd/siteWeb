@@ -10,14 +10,16 @@
 var Quiz = angular.module('Quiz', []);
 
 Quiz.controller('QuestionController', function($scope, $http, QuestionModel) { 
-	//(votre code contrôleur qui gère la page) 
-    //(les données à insérer dans le HTML vont être obtenues par QuestionModel) 
+	$scope.question = QuestionModel.question();
+	$scope.stat = QuestionModel.stat();
 }); 
 
-Quiz.service('QuestionModel', function(){ 
-	//(votre code qui correspond au modèle de votre page). 
-    //(modèle = question, réponse à une question et  
-    //statistique courante) 
+Quiz.service('QuestionModel', function() {
+	this.question = function() {
+		return {domain: "hello", text: "world", answers: ["1", "2", "3", "4"]}
+	};
+	this.answer = function() { return "not chosen yet" };
+	this.stat = function() { return "stat" };
 });
 
 
@@ -25,38 +27,38 @@ Quiz.service('QuestionModel', function(){
  * Vérifie qu'une réponse est bien choisie
  * et si c'est le cas effectue une requete ajax pour récupérer la réponse
  */
-$(document).ready(function() {
-	$('form').submit( function (e) {
-		if ($("input[type='radio']:checked").length == 0) {
-			alert("Veuillez choisir une réponse");
-		}
-		else if ($('#next').val() != 'Question suivante') {
-			// Requete ajax post qui nous permet de recuperer la bonne reponse
-			var reponse = $.ajax({
-				type: 'POST',
-				url: 'question/corriger',//à adapter si examen
-				data: $('form').serialize(),
-				datatype: 'json',
-				success: function (data) {
-					correctAnswers(data);
-					}
-			});
-		}
-		e.preventDefault();
-		return false; // on empeche le navigateur de renvoyer le formulaire
-	});
+//$(document).ready(function() {
+//	$('form').submit( function (e) {
+//		if ($("input[type='radio']:checked").length == 0) {
+//			alert("Veuillez choisir une réponse");
+//		}
+//		else if ($('#next').val() != 'Question suivante') {
+//			// Requete ajax post qui nous permet de recuperer la bonne reponse
+//			var reponse = $.ajax({
+//				type: 'POST',
+//				url: 'question/corriger',//à adapter si examen
+//				data: $('form').serialize(),
+//				datatype: 'json',
+//				success: function (data) {
+//					correctAnswers(data);
+//					}
+//			});
+//		}
+//		e.preventDefault();
+//		return false; // on empeche le navigateur de renvoyer le formulaire
+//	});
 
-	// pour notifier de l'abandon d'exam
-	if (window.location.pathname == '/questionExamen') {
-		$('#retour').click(function() {
-			var reponseAbandon = $.ajax({
-					type: 'GET',
-					url: 'question/abandon'
-				});
-		});
-	}
+//	// pour notifier de l'abandon d'exam
+//	if (window.location.pathname == '/questionExamen') {
+//		$('#retour').click(function() {
+//			var reponseAbandon = $.ajax({
+//					type: 'GET',
+//					url: 'question/abandon'
+//				});
+//		});
+//	}
 
-});
+//});
 
 /*
  * Callback de la requete ajax
@@ -69,7 +71,7 @@ function correctAnswers(data) {	// fera juste la coloration au final
 	$("label[for=" + data.answerIs + "]").addClass('true');
 	
 	// On ajoute la classe false (css->fond rouge) à la réponse fausse
-	if (data.answerSent != data.answerIs) {
+	if (data.answerSent != data.answerIs) {	
 		$("label[for=" + data.answerSent + "]").addClass('false');
 	} 
 	

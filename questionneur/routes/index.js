@@ -12,16 +12,17 @@ router.get('/accueil', function(req, res) {
 });
 
 router.get('/question', function(req, res) {
-  var callback = function(questionAleatoire)
-  {
-    var current = questionAleatoire;
-	  req.session.current = current;
-  	res.render('question', { 
-		  url: req.originalUrl,
-		  question: current
-    });
-  }
-  db.questionAleatoireRapide(callback);
+//  var callback = function(questionAleatoire)
+//  {
+//    var current = questionAleatoire;
+//	  req.session.current = current;
+//  	res.render('question', { 
+//		  url: req.originalUrl,
+//		  question: current
+//    });
+//  }
+//  db.questionAleatoireRapide(callback);
+	res.render('question');
 });
 
 
@@ -294,5 +295,6 @@ router.post('/tableauBord/stats', function (req, res) {
 router.get('/instructions', function(req, res) {
   res.render('instructions');
 });
+
 
 module.exports = router;

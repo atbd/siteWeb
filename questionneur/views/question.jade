@@ -6,33 +6,35 @@ block deco
 	link(rel='stylesheet', href='/stylesheets/question.css')
 	
 block js
-	script(type='text/javascript', charset='UTF-8', src='/javascripts/angular.min.js')
+	script(type='text/javascript', charset='UTF-8', src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js')
 	script(type='text/javascript', charset='UTF-8', src='/javascripts/gestion_questions.js')
 	
 block content
 	section#principale(ng-app='Quiz')
-	if (url == '/question')
-		- var changement = {title:"Test rapide", retour:"Retour menu"}
-	else
-		- var changement = {title:"Examen officiel", retour:"Abandon examen"}
-	h1#title
-		= changement.title
-	section#question(ng-controller="QuestionController")
-		fieldset
-			h2 
-				| Domaine : 
-				span.domain #{question.domain}
-			p
-				i Question : #{question.text}
-			form(method='POST', action="#{url}/corriger")
-				each answer, index in question.answers
-					input(type='radio', name="reponse", value="#{index}")
-					label(for="#{index}") #{answer}
-					br
-				input.button#next(type='submit', value='Corriger')
-				a#retour.button(href='/tableauBord')
-					= changement.retour
-	aside
-		h2 Statistiques
-		p Note courante :
-		p#noteCourante
+		if (url == '/question')
+			- var changement = {title:"Test rapide", retour:"Retour menu"}
+		else
+			- var changement = {title:"Examen officiel", retour:"Abandon examen"}
+		h1#title
+			= changement.title
+		div(ng-controller='QuestionController')
+			section#question
+				fieldset
+					h2 
+						| Domaine : 
+						span.domain {{question.domain}}
+					p
+						| Question : 
+						span.text {{question.text}}
+					form(method='POST', action="#{url}/corriger")
+						div(ng-repeat='answer in question.answers')
+							input(type='radio', name="reponse", value="#{index}", ng-model='answer')
+							label(for="{{$index}}") {{answer}}
+						input.button#next(type='submit', value='Corriger')
+						a#retour.button(href='/tableauBord')
+							= changement.retour
+			aside
+				h2 Statistiques
+				p Note courante :
+				p#noteCourante
+					|{{stat}}
