@@ -15,23 +15,44 @@ Quiz.controller('QuestionController', function($scope, $http, QuestionModel) {
 	$scope.answer = QuestionModel.getAnswer();
 	$scope.stat = QuestionModel.getStat();
 	
-	// On récupère la question
-	$http.get('/api/question').success(function(queryResponse) {
-		$scope.question = QuestionModel.updateQuestion(queryResponse.question);
-	});
-	
 	// On met constamment à jour notre modèle
 	$scope.$watch('answer.index', function (newIndex) {
 		QuestionModel.updateAnswer(newIndex);
 	});
-}); 
+	
+	// On gère le submit
+	$scope.submit = function() {
+		
+		$http.post('/api/corriger', {reponse: $scope.answer.index}).success(function(postResponse) {
+			$scope.buttonAction = $scope.nextQuestion;
+			$scope.buttonName = "Question suivante";
+			correctAnswers(postResponse);
+			$scope.stat = QuestionModel.updateStat({
+				"repJusteCourante": postResponse.repJusteCourante,
+				"repTotalCourante": postResponse.repTotalCourante
+			});
+		});
+	}
+	
+	$scope.nextQuestion = function() {
+		$http.get('/api/question').success(function(queryResponse) {
+			$scope.question = QuestionModel.updateQuestion(queryResponse.question);
+		});
+		$scope.buttonAction = $scope.submit;
+		$scope.buttonName = "Corriger";
+	};
+	
+	$scope.nextQuestion();
+		
+});
 
 	
 
 Quiz.service('QuestionModel', function() {
 	var question = {domain: "", text: "", answers: [""]};
 	var answer = {index: 0};	
-	var stat = "";
+	var stat = {"repJusteCourante": 0,
+				"repTotalCourante": 0};
 	
 	this.getQuestion = function() {
 		return question;
@@ -101,34 +122,29 @@ Quiz.service('QuestionModel', function() {
 
 /*
  * Callback de la requete ajax
- * Corrige la question (fond vert/rouge)
- * appel de fonctions pour les stats et se tenir pret à passer à la question suivante
+ * Colore la bonne réponse et éventuellement la mauvaise
  */
-function correctAnswers(data) {	// fera juste la coloration au final
-
+function correctAnswers(data) {
 	// On ajoute la classe true (css->fond vert) à la vraie réponse
 	$("label[for=" + data.answerIs + "]").addClass('true');
 	
 	// On ajoute la classe false (css->fond rouge) à la réponse fausse
 	if (data.answerSent != data.answerIs) {	
 		$("label[for=" + data.answerSent + "]").addClass('false');
-	} 
-	
-    changeButton();
-    $('#noteCourante').text(data.repJusteCourante + "/" + data.repTotalCourante);
+	}
 }
 
-function changeButton() {
-	/* On utilise le même bouton pour la correction et le passage à la question
-     * suivante, on doit donc enmpêcher à nouveau le submit
-     * Note : ce n'est pas du tout élégant
-     */
-     $('#next').val('Question suivante');
-     $('form').submit( function (e) {
-     	e.preventDefault();
-     	// On va vers la question suivante, donc vers question ou questionExamen
-     	// window.location.pathname renvoie 'question' ou 'questionExamen'
-     	window.location.href = window.location.pathname;
-     });
-}
+//function changeButton() {
+//	/* On utilise le même bouton pour la correction et le passage à la question
+//     * suivante, on doit donc enmpêcher à nouveau le submit
+//     * Note : ce n'est pas du tout élégant
+//     */
+//     $('#next').val('Question suivante');
+//     $('form').submit( function (e) {
+//     	e.preventDefault();
+//     	// On va vers la question suivante, donc vers question ou questionExamen
+//     	// window.location.pathname renvoie 'question' ou 'questionExamen'
+//     	window.location.href = window.location.pathname;
+//     });
+//}
 

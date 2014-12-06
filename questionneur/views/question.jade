@@ -26,11 +26,11 @@ block content
 					p
 						| Question : 
 						span.text {{question.text}}
-					form(method='POST', action="#{url}/corriger")
+					form(method='POST')
 						div(ng-repeat="possibleAnswer in question.answers")
 							input(type='radio', name="reponse", value="{{$index}}", ng-model='answer.index')
 							label(for="{{$index}}") {{possibleAnswer}}
-						input.button#next(type='submit', value='Corriger')
+						input.button#next(type='submit', ng-click='buttonAction()', value="{{buttonName}}")
 						a#retour.button(href='/tableauBord')
 							= changement.retour
 					p
@@ -39,4 +39,4 @@ block content
 				h2 Statistiques		
 				p Note courante :
 				p#noteCourante
-					|{{stat}}
+					|{{stat.repJusteCourante}}/{{stat.repTotalCourante}}

@@ -17,7 +17,7 @@ router.get('/question', function(req, res) {
 //    var current = questionAleatoire;
 //	  req.session.current = current;
 //  	res.render('question', { 
-//		  url: req.originalUrl,
+//		  url: req.originalUrl,	
 //		  question: current
 //    });
 //  }
@@ -39,10 +39,10 @@ router.get('/api/question', function(req, res) {
 });
 	
 
-router.post('/question/corriger', function(req,res) {
+router.post('/api/corriger', function(req,res) {
 	var answerSent = req.body.reponse;
 	var answerIs = req.session.current.answerIs;
-
+	
 	if (answerSent == answerIs) {
 		req.session.repJusteCourante += 1;
 	}
@@ -56,6 +56,14 @@ router.post('/question/corriger', function(req,res) {
 		"repTotalCourante": req.session.repTotalCourante
 	});
 });
+
+//router.get('/api/stats', function(req, res) {
+//	res.send({
+//		"repJusteCourante": req.session.repJusteCourante,
+//		"repTotalCourante": req.session.repTotalCourante
+//	});
+//});
+		
 
 router.post('/tableauBord/nbrQuestion', function(req,res) {
 	var tableauNbrQ = [];
