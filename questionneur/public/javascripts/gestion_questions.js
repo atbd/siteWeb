@@ -9,17 +9,50 @@
  */
 var Quiz = angular.module('Quiz', []);
 
-Quiz.controller('QuestionController', function($scope, $http, QuestionModel) { 
-	$scope.question = QuestionModel.question();
-	$scope.stat = QuestionModel.stat();
+Quiz.controller('QuestionController', function($scope, $http, QuestionModel) {
+	
+	// On récupère la question
+	$http.get('/api/question').success(function(queryResponse) {
+		$scope.question = QuestionModel.updateQuestion(queryResponse.question);
+	});
+	
+	$scope.question = QuestionModel.getQuestion();
+	$scope.answer = QuestionModel.getAnswer();
+	$scope.stat = QuestionModel.getStat();
 }); 
 
 Quiz.service('QuestionModel', function() {
-	this.question = function() {
-		return {domain: "hello", text: "world", answers: ["1", "2", "3", "4"]}
+	var question = {domain: "test", text: "", answers: [""]};
+	var answer = "";
+	var stat = "";
+	
+	this.getQuestion = function() {
+		return question;
 	};
-	this.answer = function() { return "not chosen yet" };
-	this.stat = function() { return "stat" };
+	
+	this.getAnswer = function() {
+		return answer;
+	};
+	
+	this.getStat = function() {
+		return stat;
+	};
+	
+	this.updateQuestion = function(newQuestion) {
+		question = newQuestion;
+		return question;
+	};
+	
+	this.updateAnswer = function(newAnswer) {
+		answer = newAnswer;
+		return answer;
+	};
+	
+	this.updateStat = function(newStat) {
+		stat = newStat;
+		return stat;
+	};
+	
 });
 
 

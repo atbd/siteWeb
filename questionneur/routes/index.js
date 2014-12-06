@@ -25,6 +25,19 @@ router.get('/question', function(req, res) {
 	res.render('question');
 });
 
+router.get('/api/question', function(req, res) {
+  var callback = function(questionAleatoire)
+  {
+    var current = questionAleatoire;
+	req.session.current = current;
+  	res.send({
+		  url: req.originalUrl,
+		  question: {domain: current.domain, text: current.text, answers: current.answers}
+    });
+  }
+  db.questionAleatoireRapide(callback);
+});
+	
 
 router.post('/question/corriger', function(req,res) {
 	var answerSent = req.body.reponse;
@@ -174,7 +187,7 @@ router.post('/tableauBord/popup', function(req, res) {
 		res.send(array);
 	}
 	db.popupStats(callback);
-	console.log("coucou d'index.js");
+	//console.log("coucou d'index.js");
 });
 
 router.post('/tableauBord/raz', function(req, res) {
