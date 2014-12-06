@@ -10,20 +10,27 @@
 var Quiz = angular.module('Quiz', []);
 
 Quiz.controller('QuestionController', function($scope, $http, QuestionModel) {
+	// Init
+	$scope.question = QuestionModel.getQuestion();
+	$scope.answer = QuestionModel.getAnswer();
+	$scope.stat = QuestionModel.getStat();
 	
 	// On récupère la question
 	$http.get('/api/question').success(function(queryResponse) {
 		$scope.question = QuestionModel.updateQuestion(queryResponse.question);
 	});
 	
-	$scope.question = QuestionModel.getQuestion();
-	$scope.answer = QuestionModel.getAnswer();
-	$scope.stat = QuestionModel.getStat();
+	// On met constamment à jour notre modèle
+	$scope.$watch('answer.index', function (newIndex) {
+		QuestionModel.updateAnswer(newIndex);
+	});
 }); 
 
+	
+
 Quiz.service('QuestionModel', function() {
-	var question = {domain: "test", text: "", answers: [""]};
-	var answer = "";
+	var question = {domain: "", text: "", answers: [""]};
+	var answer = {index: 0};	
 	var stat = "";
 	
 	this.getQuestion = function() {
@@ -45,7 +52,6 @@ Quiz.service('QuestionModel', function() {
 	
 	this.updateAnswer = function(newAnswer) {
 		answer = newAnswer;
-		return answer;
 	};
 	
 	this.updateStat = function(newStat) {

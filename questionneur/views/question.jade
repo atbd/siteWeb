@@ -27,14 +27,16 @@ block content
 						| Question : 
 						span.text {{question.text}}
 					form(method='POST', action="#{url}/corriger")
-						div(ng-repeat='answer in question.answers')
-							input(type='radio', name="reponse", value="#{index}", ng-model='answer')
-							label(for="{{$index}}") {{answer}}
+						div(ng-repeat="possibleAnswer in question.answers")
+							input(type='radio', name="reponse", value="{{$index}}", ng-model='answer.index')
+							label(for="{{$index}}") {{possibleAnswer}}
 						input.button#next(type='submit', value='Corriger')
 						a#retour.button(href='/tableauBord')
 							= changement.retour
+					p
+						| Answer: {{answer.index}}
 			aside
-				h2 Statistiques
+				h2 Statistiques		
 				p Note courante :
 				p#noteCourante
 					|{{stat}}
