@@ -15,18 +15,30 @@ Quiz.controller('QuestionController', function($scope, $http, QuestionModel) {
 	$scope.answer = QuestionModel.getAnswer();
 	$scope.stat = QuestionModel.getStat();
 	
-	// On met constamment à jour notre modèle
+	// Action du bouton de retour vers le tableau de bord
+	$scope.leavingAction = function() {
+		// dans le cas d'un examen, on avertit le serveur
+		if (window.location.pathname == '/questionExamen') {
+			$http.post('question/abandon').success(function() {
+				window.location.href='/tableauBord';
+			});
+		}
+		else {
+			window.location.href='/tableauBord';
+		}
+	};
+	
+	// On met constamment à jour notre modèle au niveau de la réponse utilisateur
 	$scope.$watch('answer.index', function (newIndex) {
 		QuestionModel.updateAnswer(newIndex);
 	});
 	
 	// On gère le submit
-	$scope.submit = function() {
-		
-		$http.post('/api/corriger', {reponse: $scope.answer.index}).success(function(postResponse) {
+	$scope.submit = function() {		
+		$http.post('/api/question/corriger', {reponse: $scope.answer.index}).success(function(postResponse) {
 			$scope.buttonAction = $scope.nextQuestion;
 			$scope.buttonName = "Question suivante";
-			correctAnswers(postResponse);
+			correctAnswers(postResponse);// pour le surlignage vert/rouge
 			$scope.stat = QuestionModel.updateStat({
 				"repJusteCourante": postResponse.repJusteCourante,
 				"repTotalCourante": postResponse.repTotalCourante
@@ -35,18 +47,22 @@ Quiz.controller('QuestionController', function($scope, $http, QuestionModel) {
 	}
 	
 	$scope.nextQuestion = function() {
-		$http.get('/api/question').success(function(queryResponse) {
-			$scope.question = QuestionModel.updateQuestion(queryResponse.question);
+		$http.get('/api' + window.location.pathname).success(function(queryResponse) {
+			if (queryResponse.finished == "yes") {
+				window.location.href = '../examenTermine';//seule solution trouvée avec angular, apparemment il empêche le redirect d'express
+			}
+			else {
+				$scope.question = QuestionModel.updateQuestion(queryResponse.question);
+				$scope.buttonAction = $scope.submit;
+				$scope.buttonName = "Corriger";
+				$scope.answer = {index: 0};
+			}
 		});
-		$scope.buttonAction = $scope.submit;
-		$scope.buttonName = "Corriger";
 	};
 	
+	// Et on lance tout avec cette ligne !
 	$scope.nextQuestion();
-		
 });
-
-	
 
 Quiz.service('QuestionModel', function() {
 	var question = {domain: "", text: "", answers: [""]};
@@ -82,47 +98,9 @@ Quiz.service('QuestionModel', function() {
 	
 });
 
-
 /*
- * Vérifie qu'une réponse est bien choisie
- * et si c'est le cas effectue une requete ajax pour récupérer la réponse
- */
-//$(document).ready(function() {
-//	$('form').submit( function (e) {
-//		if ($("input[type='radio']:checked").length == 0) {
-//			alert("Veuillez choisir une réponse");
-//		}
-//		else if ($('#next').val() != 'Question suivante') {
-//			// Requete ajax post qui nous permet de recuperer la bonne reponse
-//			var reponse = $.ajax({
-//				type: 'POST',
-//				url: 'question/corriger',//à adapter si examen
-//				data: $('form').serialize(),
-//				datatype: 'json',
-//				success: function (data) {
-//					correctAnswers(data);
-//					}
-//			});
-//		}
-//		e.preventDefault();
-//		return false; // on empeche le navigateur de renvoyer le formulaire
-//	});
-
-//	// pour notifier de l'abandon d'exam
-//	if (window.location.pathname == '/questionExamen') {
-//		$('#retour').click(function() {
-//			var reponseAbandon = $.ajax({
-//					type: 'GET',
-//					url: 'question/abandon'
-//				});
-//		});
-//	}
-
-//});
-
-/*
- * Callback de la requete ajax
- * Colore la bonne réponse et éventuellement la mauvaise
+ * Dans le callback de la requete ajax
+ * Colore la bonne réponse et éventuellement la mauvaise en utilisant jquery (ancien code)
  */
 function correctAnswers(data) {
 	// On ajoute la classe true (css->fond vert) à la vraie réponse
@@ -134,17 +112,4 @@ function correctAnswers(data) {
 	}
 }
 
-//function changeButton() {
-//	/* On utilise le même bouton pour la correction et le passage à la question
-//     * suivante, on doit donc enmpêcher à nouveau le submit
-//     * Note : ce n'est pas du tout élégant
-//     */
-//     $('#next').val('Question suivante');
-//     $('form').submit( function (e) {
-//     	e.preventDefault();
-//     	// On va vers la question suivante, donc vers question ou questionExamen
-//     	// window.location.pathname renvoie 'question' ou 'questionExamen'
-//     	window.location.href = window.location.pathname;
-//     });
-//}
 

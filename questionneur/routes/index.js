@@ -2,29 +2,7 @@ var express = require('express');
 var db = require('../lib/db');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.redirect('accueil');
-});
-
-router.get('/accueil', function(req, res) {
-  res.render('accueil');
-});
-
-router.get('/question', function(req, res) {
-//  var callback = function(questionAleatoire)
-//  {
-//    var current = questionAleatoire;
-//	  req.session.current = current;
-//  	res.render('question', { 
-//		  url: req.originalUrl,	
-//		  question: current
-//    });
-//  }
-//  db.questionAleatoireRapide(callback);
-	res.render('question');
-});
-
+/* API */
 router.get('/api/question', function(req, res) {
   var callback = function(questionAleatoire)
   {
@@ -39,7 +17,7 @@ router.get('/api/question', function(req, res) {
 });
 	
 
-router.post('/api/corriger', function(req,res) {
+router.post('/api/question/corriger', function(req,res) {
 	var answerSent = req.body.reponse;
 	var answerIs = req.session.current.answerIs;
 	
@@ -57,13 +35,49 @@ router.post('/api/corriger', function(req,res) {
 	});
 });
 
+// À séparer en toute rigueur
 //router.get('/api/stats', function(req, res) {
 //	res.send({
 //		"repJusteCourante": req.session.repJusteCourante,
 //		"repTotalCourante": req.session.repTotalCourante
 //	});
 //});
+
+router.post('/api/questionExamen/corriger', function(req, res) {
+	res.redirect(307, '../question/corriger');// ne devrait pas arriver
+});
+
+router.get('/api/questionExamen', function(req, res) {
+	req.session.indexCurrent++;
+	var index = req.session.indexCurrent;
 		
+	if (index >= req.session.number) {
+		res.send({finished: "yes"});
+	}
+	else {
+	  db.obtenirQuestionParId(req.session.idQuestions[index]._id, function(questionTrouvee) {
+	    req.session.current = questionTrouvee;
+	  	res.send({question: req.session.current});
+	  });
+	}
+});
+
+/* ROUTES */
+router.get('/', function(req, res) {
+  res.redirect('accueil');
+});
+
+router.get('/accueil', function(req, res) {
+  res.render('accueil');
+});
+
+router.get('/question', function(req, res) {
+	res.render('question', {url: req.originalUrl});
+});
+
+router.get('/questionExamen', function(req, res) {
+	res.render('question', {url: req.originalUrl});
+});
 
 router.post('/tableauBord/nbrQuestion', function(req,res) {
 	var tableauNbrQ = [];
@@ -74,7 +88,6 @@ router.post('/tableauBord/nbrQuestion', function(req,res) {
 	
 	// Callback Hell
 	// TODO: apprendre à utiliser correctement async et refactoriser tout ça !!!
-	//db.connect();// ça devrait pas être là
 	db.obtenirNbrQuestionParDomaine("HTML", function(err, compte) {
 	  if (err) return console.error(err);
 	  tableauNbrQ.push(compte);
@@ -84,7 +97,6 @@ router.post('/tableauBord/nbrQuestion', function(req,res) {
 	    db.obtenirNbrQuestionParDomaine("JS", function(err, compte3) {
 	      if (err) return console.error(err);
 	      tableauNbrQ.push(compte3);
-	      //db.disconnect();
 	      res.send({
 		      "nbrQuestionHTML": tableauNbrQ[0],
 		      "nbrQuestionCSS": tableauNbrQ[1],
@@ -128,12 +140,11 @@ router.post('/ajouterQuestion', function(req,res) {
 });	
 
 router.get('/ajouterToutesLesQuestions', function(req, res) {
-  db.addEverything();
-  res.send("Toutes les questions ont été ajoutées.");
+	db.addEverything();
+	res.send("Toutes les questions ont été ajoutées.");
 });
 
 router.post('/questionExamen', function(req, res) {
-
 	var domaines = [];
 	if (req.body.HTML == "on")
 		domaines.push("HTML");
@@ -145,47 +156,15 @@ router.post('/questionExamen', function(req, res) {
 	// On récupère les id des questions de l'exam
 	db.initExam(domaines, req.body.number, function (idQuestions) {
 	
-//	  if (idQuestions === undefined)
-//	  {
-//		  // TODO: mieux gérer l'erreur
-//		  console.log("Pas assez de question dans la bdd");
-//		  res.redirect('tableauBord');
-//	  }
-//	  else
-//	  {
-		  // Enregistrement dans session
-		  req.session.domaines = domaines;
-		  req.session.idQuestions = idQuestions;
-		  req.session.number = req.body.number;
-		  req.session.indexCurrent = -1;// index dans le tableau idQuestions
-		  res.redirect('questionExamen');
-//	  }
+	// TODO: gérer l'erreur si idQuestions === undefined
+	// Enregistrement dans session
+	req.session.domaines = domaines;
+	req.session.idQuestions = idQuestions;
+	req.session.number = req.body.number;
+	req.session.indexCurrent = -1;// index dans le tableau idQuestions
+	res.redirect('questionExamen');
 	  
 	});
-});
-
-router.post('/questionExamen/corriger', function(req, res) {
-	// Pas de différence avec question pour le moment
-	// mais on en aura peut-être dans les prochains tp si on fait plus
-	// de choses côté serveur
-	res.redirect('../question/corriger');
-});
-
-router.get('/questionExamen', function(req, res) {
-	req.session.indexCurrent++;
-	var index = req.session.indexCurrent;
-		
-	if (index >= req.session.number)
-		res.redirect('examenTermine');
-	else {
-	  db.obtenirQuestionParId(req.session.idQuestions[index]._id, function(questionTrouvee) {
-	    req.session.current = questionTrouvee;
-	  	res.render('question', { 
-	  	  url: req.originalUrl,
-	  		question: req.session.current
-	  	});
-	  });
-	}
 });
 
 router.post('/tableauBord/popup', function(req, res) {
@@ -202,7 +181,7 @@ router.post('/tableauBord/raz', function(req, res) {
 	db.remiseAZero();
 });
 
-router.get('/question/abandon', function(req,res) {
+router.post('/question/abandon', function(req,res) {
 	// lorsque le "joueur" abandonne
 
 	var callback = function() {
@@ -222,7 +201,7 @@ router.get('/question/abandon', function(req,res) {
 	db.abandonExam(content, callback);
 	console.log("Abandon d'un exam !!");
 
-	res.redirect('/tableauBord');
+	res.send(200);
 });
 
 router.post('/examenTermine', function(req,res) {

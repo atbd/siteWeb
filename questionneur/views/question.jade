@@ -31,10 +31,7 @@ block content
 							input(type='radio', name="reponse", value="{{$index}}", ng-model='answer.index')
 							label(for="{{$index}}") {{possibleAnswer}}
 						input.button#next(type='submit', ng-click='buttonAction()', value="{{buttonName}}")
-						a#retour.button(href='/tableauBord')
-							= changement.retour
-					p
-						| Answer: {{answer.index}}
+						input.button(type='button', ng-click='leavingAction()', value=changement.retour)
 			aside
 				h2 Statistiques		
 				p Note courante :
