@@ -277,21 +277,6 @@ router.get('/tableauBord', function(req, res) {
 
 router.post('/tableauBord/stats', function (req, res) {
 
-/*	var callback = function(array) {
-		for (i = 0 ; i < array.length ; i++) {
-			juste = array[i].juste;
-			total = array[i].total;
-
-			if (total != "X") {
-				req.session.repJusteGlobaleExam += parseInt(juste);
-				req.session.repTotalGlobaleExam += parseInt(total);
-			}
-		}
-	}
-	db.popupStats(callback);
-	console.log(req.session.repTotalGlobaleExam);
-				console.log(req.session.repJusteGlobaleExam); */
-
 	if (req.session.repTotalGlobaleExam != 0) {
 		var pourcentage = ((req.session.repJusteGlobaleExam/req.session.repTotalGlobaleExam)*100).toString();
 	} else {
