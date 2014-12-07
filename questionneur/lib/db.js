@@ -14,7 +14,6 @@ var Schema = mongoose.Schema;
 var username = "test";
 var password = "test";
 var adress = '@ds053320.mongolab.com:53320/questions';
-//var adressNotes = '@ds053320.mongolab.com:53320/notes';
 
 // Connexion
 function connect() {
@@ -24,13 +23,6 @@ function connect() {
     if (err) return console.error(err);
     console.log("Connecté");
   });
-
-/*	var url2 = 'mongodb://' + "testNotes" + ':' + "testNotes" + adressNotes;
-	console.log("Connexion à " + adressNotes);
-	mongoose.createConnection(url2, function(err) {
-    	if (err) return console.error(err);
-    	console.log("Connecté");
-  }); */
 }
 
 // Déconnexion

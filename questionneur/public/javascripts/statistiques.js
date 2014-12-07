@@ -5,7 +5,6 @@
  *
  */
 $(document).ready(function() {
-	//afficherStats();
 	
 	var reponseStat = $.ajax({
 		type: 'POST',
@@ -23,7 +22,6 @@ $(document).ready(function() {
 			url: 'tableauBord/raz',
 			success: function () {
 				window.location.reload();
-				// TODO: le rechargement ne fonctionne pas pour l'instant
 			}
 		}); 
 	}); 
