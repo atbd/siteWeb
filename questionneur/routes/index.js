@@ -87,7 +87,6 @@ router.post('/tableauBord/nbrQuestion', function(req,res) {
 	}
 	
 	// Callback Hell
-	// TODO: apprendre à utiliser correctement async et refactoriser tout ça !!!
 	db.obtenirNbrQuestionParDomaine("HTML", function(err, compte) {
 	  if (err) return console.error(err);
 	  tableauNbrQ.push(compte);
@@ -115,7 +114,6 @@ router.get('/ajouterQuestion', function(req,res) {
 
 router.post('/ajouterQuestion', function(req,res) {
 	// verifications sur la req
-	//TODO !
 	var categorie;
 	if (req.body.HTML == "HTML")
 		categorie = "HTML";
@@ -187,9 +185,6 @@ router.post('/question/abandon', function(req,res) {
 	var callback = function() {
 		req.session.repJusteCourante = 0;
 		req.session.repTotalCourante = 0;
-
-		// TODO: depuis ça bug dans le pourcentage on dirait... et pas qu'un peu !
-		req.session.repTotalGlobaleExam += req.session.number;
 	}
 
 	var content = {
@@ -211,7 +206,6 @@ router.post('/examenTermine', function(req,res) {
 	req.session.repJusteCourante = 0;
 	req.session.repTotalCourante = 0;
 
-	// TODO : prendre en compte l'abandon d'exam, je sais pas encore comment
 	req.session.repJusteGlobaleExam += repJuste;
 	req.session.repTotalGlobaleExam += nbr;
 
@@ -278,7 +272,7 @@ router.get('/tableauBord', function(req, res) {
 });
 
 router.post('/tableauBord/stats', function (req, res) {
-	// TODO: prendre en compte abandon exam
+
 	if (req.session.repTotalGlobaleExam != 0) {
 		var pourcentage = ((req.session.repJusteGlobaleExam/req.session.repTotalGlobaleExam)*100).toString();
 	} else {
