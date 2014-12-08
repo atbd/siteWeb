@@ -178,6 +178,7 @@ router.post('/tableauBord/popup', function(req, res) {
 
 router.post('/tableauBord/raz', function(req, res) {
 	db.remiseAZero();
+	res.send(200);
 });
 
 router.post('/question/abandon', function(req,res) {
